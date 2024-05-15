@@ -11,6 +11,23 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CinemaDao {
 
+  // CINEMA
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  suspend fun insertCinema(cinema: Cinema)
+
+  @Update(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun updateCinema(cinema: Cinema)
+
+  @Delete
+  suspend fun deleteCinema(cinema: Cinema)
+
+  @Query("SELECT * FROM Cinema")
+  fun getAllCinemas(): Flow<List<Cinema>>
+
+  @Query("SELECT * FROM Cinema WHERE cinemaId = :cinemaId")
+  fun getCinemaById(cinemaId: Int): Flow<Cinema>
+
+
   // Ticket.
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun insertTicket(ticket: Ticket)
@@ -24,11 +41,11 @@ interface CinemaDao {
   @Query("SELECT * FROM Ticket")
   fun getAllTickets(): Flow<List<Ticket>>
 
-  @Query("SELECT * FROM Ticket WHERE id = :ticketId")
+  @Query("SELECT * FROM Ticket WHERE ticketId = :ticketId")
   fun getTicketById(ticketId: Int): Flow<Ticket>
 
 
-  // Movie.
+  // Movie
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun insertMovie(movie: Movie)
 
@@ -41,7 +58,24 @@ interface CinemaDao {
   @Query("SELECT * FROM Movie")
   fun getAllMovies(): Flow<List<Movie>>
 
-  @Query("SELECT * FROM Movie WHERE id = :movieId")
+  @Query("SELECT * FROM Movie WHERE movieId = :movieId")
   fun getMovieById(movieId: Int): Flow<Movie>
+
+
+  // Showtime
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  suspend fun insertShowtime(showtime: Showtime)
+
+  @Update(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun updateShowtime(showtime: Showtime)
+
+  @Delete
+  suspend fun deleteShowtime(showtime: Showtime)
+
+  @Query("SELECT * FROM Showtime")
+  fun getAllShowtimes(): Flow<List<Showtime>>
+
+  @Query("SELECT * FROM Showtime WHERE showtimeId = :showtimeId")
+  fun getShowtimeById(showtimeId: Int): Flow<Showtime>
 
 }
