@@ -18,8 +18,7 @@ class Repository(
 
   suspend fun insertCinema(cinema: Cinema) = cinemaDao.insertCinema(cinema)
 
-  suspend fun insertShowtime(showtime: Showtime) =
-    cinemaDao.insertShowtime(showtime)
+  suspend fun insertShowtime(showtime: Showtime) = cinemaDao.insertShowtime(showtime)
 
   suspend fun deleteMovie(movie: Movie) = cinemaDao.deleteMovie(movie)
 
