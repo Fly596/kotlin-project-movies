@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ConfirmPurchaseScreen(
     modifier: Modifier = Modifier,
-    onPurchaseClicked: () -> Unit, // Callback when purchase is clicked
-    onPaymentMethodSelected: (String) -> Unit // Callback when a payment method is selected
+    onPurchaseClicked: () -> Unit = {},
+    onPaymentMethodSelected: (String) -> Unit = {}
 ) {
     var textFieldInput by remember { mutableStateOf("") }
     var selectedPaymentMethod by remember { mutableStateOf("") }

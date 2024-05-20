@@ -1,7 +1,6 @@
 package com.example.kotlin_project_theater.ui.home
 
 import android.content.res.Configuration
-import android.graphics.Movie
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,7 +19,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,24 +30,28 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.kotlin_project_theater.CinemaViewModel
 import com.example.kotlin_project_theater.R
 import com.example.kotlin_project_theater.data.Movies
 import com.example.kotlin_project_theater.data.TableData.moviesList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(onMovieClick: (Int) -> Unit = {}, modifier: Modifier = Modifier) {
+fun HomeScreen(onMovieClick: (Int) -> Unit, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Now Playing", style = MaterialTheme.typography.headlineMedium) },
                 colors =
-                TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
+                    TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
                 actions = {
-                    IconButton(onClick = { /* Handle ticket icon action */ },
+
+                    // Кнопка для просмотра купленных билетов.
+                    IconButton(
+                        onClick = { /* TODO: Handle ticket icon action */ },
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_tickets_fill),
@@ -63,56 +65,61 @@ fun HomeScreen(onMovieClick: (Int) -> Unit = {}, modifier: Modifier = Modifier) 
         modifier = modifier
     ) { innerPadding ->
 
+        // Список прокатных фильмов.
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(minSize = 128.dp),
             contentPadding = PaddingValues(all = 16.dp),
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
+            modifier = Modifier.padding(innerPadding).fillMaxSize()
         ) {
-            items(4) { index -> MovieCardItem(movie = moviesList[index]) }
+            // TODO:
+            items(4) { index -> MovieCardItem(movie = moviesList[index], onMovieClick) }
         }
     }
 }
 
+// Карточка фильма.
 @Composable
-fun MovieCardItem(movie: Movies, modifier: Modifier = Modifier) {
+fun MovieCardItem(movie: Movies, onClick: (Int) -> Unit, modifier: Modifier = Modifier) {
+    val viewModel = CinemaViewModel()
+
     ElevatedCard(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+        modifier = modifier.fillMaxWidth().padding(8.dp),
         colors =
-        CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        ),
+            CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-
         Column(modifier = Modifier.padding(16.dp)) {
+
+            // Постер
             Image(
                 painter = painterResource(id = movie.poster),
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(0.75f)
-                    .clip(MaterialTheme.shapes.medium)
+                    Modifier.fillMaxWidth().aspectRatio(0.75f).clip(MaterialTheme.shapes.medium)
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
+            // Краткая инфа о фильме: название и длина.
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
-                text = "${movie.length} | Released ${movie.year}",
+                text = "${viewModel.convertMinToHoursMin(movie.length)} | Released ${movie.year}",
                 style = MaterialTheme.typography.bodySmall
             )
+
             Spacer(modifier = Modifier.height(16.dp))
+
+            // Кнопка для выбора фильма.
             Button(
-                onClick = { /* Handle get tickets action */ },
+                onClick = { onClick(movie.movieId) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium
             ) {
@@ -121,7 +128,6 @@ fun MovieCardItem(movie: Movies, modifier: Modifier = Modifier) {
         }
     }
 }
-
 
 @Preview(
     name = "HomeScreen",
@@ -132,5 +138,5 @@ fun MovieCardItem(movie: Movies, modifier: Modifier = Modifier) {
 )
 @Composable
 private fun PreviewHomeScreen() {
-    HomeScreen()
+    HomeScreen(onMovieClick = {})
 }

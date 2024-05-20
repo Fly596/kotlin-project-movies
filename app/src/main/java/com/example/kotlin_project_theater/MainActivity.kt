@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.kotlin_project_theater.ui.home.GetTicketsScreen
 import com.example.kotlin_project_theater.ui.home.HomeScreen
 import com.example.kotlin_project_theater.ui.theme.AppTheaterTheme
 
@@ -24,8 +23,8 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
                 ) {
-                    HomeScreen()
-                    //GetTicketsScreen()
+                    HomeScreen(onMovieClick = {})
+                    // GetTicketsScreen()
                 }
                 // HomeScreen()
             }
