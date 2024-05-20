@@ -7,17 +7,13 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @TypeConverters(value = [DateConverter::class])
-@Database(
-    entities = [Ticket::class, Movie::class, Cinema::class, Showtime::class], version = 1
-)
+@Database(entities = [Ticket::class, Movies::class, Cinema::class, Showtime::class], version = 1)
 abstract class CinemaDatabase : RoomDatabase() {
     abstract fun cinemaDao(): CinemaDao
 
     companion object {
 
-        // For Singleton..
-        @Volatile
-        var INSTANCE: CinemaDatabase? = null
+        @Volatile var INSTANCE: CinemaDatabase? = null
 
         fun getInstance(context: Context): CinemaDatabase {
             return INSTANCE
