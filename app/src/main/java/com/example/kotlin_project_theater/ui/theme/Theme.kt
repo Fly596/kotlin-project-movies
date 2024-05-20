@@ -21,6 +21,7 @@ data class ExtendedColorScheme(
     val gibraltarSea: ColorFamily,
 )
 
+
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
@@ -248,6 +249,7 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHigh = surfaceContainerHighDarkHighContrast,
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
+
 
 val extendedLight = ExtendedColorScheme(
     gibraltarSea = ColorFamily(
