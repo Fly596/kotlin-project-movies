@@ -1,6 +1,5 @@
 package com.example.kotlin_project_theater.data
 
-import android.graphics.Movie
 import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
