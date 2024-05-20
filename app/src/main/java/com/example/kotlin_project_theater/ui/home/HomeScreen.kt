@@ -63,6 +63,7 @@ fun HomeScreen(onMovieClick: (Int) -> Unit, modifier: Modifier = Modifier) {
             )
         },
         modifier = modifier
+
     ) { innerPadding ->
 
         // Список прокатных фильмов.
