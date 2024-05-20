@@ -25,14 +25,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kotlin_project_theater.CinemaViewModel
 import com.example.kotlin_project_theater.R
 
 @Composable
-fun GetTicketsScreen(movieId: Int = 0) {
+fun GetTicketsScreen(viewModel: CinemaViewModel, movieId: Int) {
+
+    val state = viewModel.state
+    val moviesList = state.movies
 
     Column {
 
-        MovieTitle(title = "TODO: movie.title")
+        MovieTitle(title = "movie.title")
 
         HorizontalDivider(Modifier.padding(vertical = 8.dp))
 

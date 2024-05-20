@@ -1,10 +1,10 @@
 package com.example.kotlin_project_theater.data
 
 class Repository(private val cinemaDao: CinemaDao) {
-    val movies = cinemaDao.getAllMovies()
-    val tickets = cinemaDao.getAllTickets()
-    val showTimes = cinemaDao.getAllShowtimes()
-    val cinemas = cinemaDao.getAllCinemas()
+    fun getmovies() = cinemaDao.getAllMovies()
+    fun gettickets() = cinemaDao.getAllTickets()
+    fun getshowTimes() = cinemaDao.getAllShowtimes()
+    fun getcinemas() = cinemaDao.getAllCinemas()
 
     fun getMovieById(movieId: Int) = cinemaDao.getMovieById(movieId)
 

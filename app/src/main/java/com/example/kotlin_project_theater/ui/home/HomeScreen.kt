@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -30,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kotlin_project_theater.CinemaViewModel
 import com.example.kotlin_project_theater.R
 import com.example.kotlin_project_theater.data.Movies
@@ -38,16 +40,32 @@ import com.example.kotlin_project_theater.data.TableData.moviesList
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(onMovieClick: (Int) -> Unit, modifier: Modifier = Modifier) {
+    val viewModel = viewModel(modelClass = CinemaViewModel::class.java)
+    val state = viewModel.state
+    val moviesList = state.movies
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Now Playing", style = MaterialTheme.typography.headlineMedium) },
                 colors =
-                    TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
+                TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
                 actions = {
+/*                     Button(onClick = {
+                        viewModel.addCinema()
+                    }) {
+                        Text("Add Cinemas")
+                    }
+
+                    Button(onClick = {
+                        viewModel.addMovie()
+                    }) {
+                        Text("Add Movies")
+                    } */
+
 
                     // Кнопка для просмотра купленных билетов.
                     IconButton(
@@ -70,10 +88,22 @@ fun HomeScreen(onMovieClick: (Int) -> Unit, modifier: Modifier = Modifier) {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(minSize = 128.dp),
             contentPadding = PaddingValues(all = 16.dp),
-            modifier = Modifier.padding(innerPadding).fillMaxSize()
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
         ) {
             // TODO:
-            items(4) { index -> MovieCardItem(movie = moviesList[index], onMovieClick) }
+            items(state.movies){movie->
+                MovieCardItem(movie = movie, onClick = onMovieClick)
+            }
+
+
+ /*            items(4) { index ->
+                MovieCardItem(
+                    movie =  *//*TODO get data from db*//* moviesList[index],
+                    onClick = onMovieClick
+                )
+            } */
         }
     }
 }
@@ -84,12 +114,14 @@ fun MovieCardItem(movie: Movies, onClick: (Int) -> Unit, modifier: Modifier = Mo
     val viewModel = CinemaViewModel()
 
     ElevatedCard(
-        modifier = modifier.fillMaxWidth().padding(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         colors =
-            CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
+        CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -100,7 +132,10 @@ fun MovieCardItem(movie: Movies, onClick: (Int) -> Unit, modifier: Modifier = Mo
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
                 modifier =
-                    Modifier.fillMaxWidth().aspectRatio(0.75f).clip(MaterialTheme.shapes.medium)
+                Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(0.75f)
+                    .clip(MaterialTheme.shapes.medium)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -120,7 +155,10 @@ fun MovieCardItem(movie: Movies, onClick: (Int) -> Unit, modifier: Modifier = Mo
 
             // Кнопка для выбора фильма.
             Button(
-                onClick = { onClick(movie.movieId) },
+                onClick = {
+                    onClick(movie.movieId)
+                },
+
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium
             ) {
