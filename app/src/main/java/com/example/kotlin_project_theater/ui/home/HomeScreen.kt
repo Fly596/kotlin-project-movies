@@ -38,17 +38,18 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         topBar = {
             CenterAlignedTopAppBar(
                 colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    ),
+                TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
                 title = { Text("Home Screen") },
                 actions = {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             painter = painterResource(R.drawable.icon_tickets_fill),
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer)
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
                     }
                 })
         },
@@ -58,9 +59,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(innerPadding).fillMaxSize()) {
-                items(4) { MovieCardItem() }
-            }
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            items(4) { MovieCardItem() }
+        }
     }
 }
 
@@ -68,21 +72,26 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 fun MovieCardItem(modifier: Modifier = Modifier) {
     ElevatedCard(
         colors =
-            CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer),
+        CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        ),
     ) {
         Column {
             Image(
                 painter = painterResource(R.drawable.the_neon_demon_2016),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(250.dp).clip(RoundedCornerShape(8.dp)))
+                modifier = Modifier
+                    .size(250.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
             ShortDescription(
                 name = "The Neon Demon",
                 year = "2016",
                 length = "1 HR 44 MIN",
-                modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp))
+                modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
+            )
             Button(
                 onClick = { /*TODO*/ },
                 modifier = Modifier.padding(8.dp),
@@ -99,7 +108,8 @@ fun ShortDescription(name: String, length: String, year: String, modifier: Modif
         Text(
             text = name,
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp))
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
         Text(text = length, style = MaterialTheme.typography.bodySmall)
         Text(text = "Released $year", style = MaterialTheme.typography.bodySmall)
     }
@@ -107,8 +117,10 @@ fun ShortDescription(name: String, length: String, year: String, modifier: Modif
 
 @Preview(
     name = "HomeScreen",
-    device = "id:pixel_8",
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL)
+    device = "id:pixel_8", showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+    showBackground = true,
+)
 @Composable
 private fun PreviewHomeScreen() {
     HomeScreen()

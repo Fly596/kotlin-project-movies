@@ -1,4 +1,5 @@
 package com.example.kotlin_project_theater.ui.theme
+
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF8F4951)

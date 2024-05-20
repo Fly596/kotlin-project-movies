@@ -6,4 +6,4 @@ import com.example.kotlin_project_theater.data.Repository
 
 class CinemaViewModel(
     private val repository: Repository = Graph.repository
-) : ViewModel() { }
+) : ViewModel() {}
