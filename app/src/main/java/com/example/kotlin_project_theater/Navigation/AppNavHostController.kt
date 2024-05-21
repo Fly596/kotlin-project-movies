@@ -5,10 +5,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-
-
 import com.example.kotlin_project_theater.ui.GetTicketsScreen
-import com.example.kotlin_project_theater.ui.HomeScreen
+import com.example.kotlin_project_theater.ui.home.HomeScreen
 import com.example.kotlin_project_theater.ui.TicketOptionsScreen
 import kotlinx.serialization.Serializable
 
@@ -16,19 +14,17 @@ import kotlinx.serialization.Serializable
 fun AppNavHostController() {
     val navController = rememberNavController()
 
-    //TODO: add viewModel to each screen and pass it to composable
+    // TODO: add viewModel to each screen and pass it to composable
     // val viewModel = CinemaViewModel()...
-    
-    NavHost(
-        navController = navController,
-        startDestination = HomeScreenA
-    ) {
+
+    NavHost(navController = navController, startDestination = HomeScreenA) {
 
         // Начальный экран со списком фильмов.
         composable<HomeScreenA> {
             HomeScreen(
-                onNavigate = {
-                    navController.navigate(GetTicketsScreenB(it))
+                onNavigate = { movie ->
+                    navController.navigate(GetTicketsScreenB(movie))
+                    //
                 }
             )
         }
@@ -44,7 +40,7 @@ fun AppNavHostController() {
         composable<TicketTypeScreenC> { TicketOptionsScreen() }
 
         // Экран с подтверждением покупки.
-/*         composable<ConfirmScreenD> {
+        /*         composable<ConfirmScreenD> {
             val args = it.toRoute<ConfirmScreenD>()
 
             ConfirmPurchaseScreen(onPurchaseClicked = args.onPurchaseClicked)
@@ -58,4 +54,4 @@ fun AppNavHostController() {
 
 @Serializable object TicketTypeScreenC
 
-//@Serializable data class ConfirmScreenD(val onPurchaseClicked: () -> Unit)
+// @Serializable data class ConfirmScreenD(val onPurchaseClicked: () -> Unit)

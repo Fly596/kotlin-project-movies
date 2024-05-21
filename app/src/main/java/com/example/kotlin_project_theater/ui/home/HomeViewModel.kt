@@ -1,61 +1,26 @@
 package com.example.kotlin_project_theater.ui.home
 
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kotlin_project_theater.data.Cinema
 import com.example.kotlin_project_theater.data.Graph
 import com.example.kotlin_project_theater.data.Movies
 import com.example.kotlin_project_theater.data.Repository
-import com.example.kotlin_project_theater.data.Showtime
 import com.example.kotlin_project_theater.data.TableData
-import com.example.kotlin_project_theater.data.Ticket
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
-    private val repository: Repository = Graph.repository
-) : ViewModel() {
+class HomeViewModel(private val repository: Repository = Graph.repository) : ViewModel() {
 
-    // region renew
-    var state by mutableStateOf(HomeState())
+    var state by mutableStateOf(HomeStateN())
         private set
 
     init {
         getMovies()
     }
-
-    private fun getMovies() {
-        viewModelScope.launch {
-            repository.moviesVal.collectLatest {
-                state = state.copy(movies = it)
-            }
-        }
-    }
-
-
-    // endregion
-
-    private fun getCinemas() {
-        viewModelScope.launch {
-            repository.getcinemas().collectLatest {
-                state = state.copy(cinemas = it)
-            }
-        }
-    }
-
-    fun getMovieById(movieId: Int) {
-        viewModelScope.launch {
-            repository.getMovieById(movieId).collectLatest {
-                state = state.copy(selectedMovie = it)
-            }
-        }
-    }
-    /*     val movies = repository.movies.collectLatest {
-            state = state.copy(movies = it)
-        } */
 
 
     fun addMovie() {
@@ -64,6 +29,13 @@ class HomeViewModel(
         }
     }
 
+    private fun getMovies() {
+        viewModelScope.launch {
+            repository.getMovies().collectLatest {
+                state = state.copy(movies = it)
+            }
+        }
+    }
 
     fun convertMinToHoursMin(minutes: Int): String {
         val hours = minutes / 60
@@ -73,11 +45,15 @@ class HomeViewModel(
     }
 }
 
-data class HomeState(
+data class HomeStateN(
+    val movies: List<Movies> = emptyList(),
+)
+
+/* data class HomeState(
     val movies: List<Movies> = emptyList(),
     val cinemas: List<Cinema> = emptyList(),
     val showTimes: List<Showtime> = emptyList(),
     val tickets: List<Ticket> = emptyList(),
     val selectedMovie: Movies? = null
 
-)
+) */

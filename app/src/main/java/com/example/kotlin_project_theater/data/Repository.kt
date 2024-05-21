@@ -3,34 +3,20 @@ package com.example.kotlin_project_theater.data
 import kotlinx.coroutines.flow.Flow
 
 class Repository(private val cinemaDao: CinemaDao) {
-    // region renew
-    val moviesVal = cinemaDao.getAllMovies()
 
-    // endregion
-
-
-    fun getmovies() = cinemaDao.getAllMovies()
-    fun gettickets() = cinemaDao.getAllTickets()
-    fun getshowTimes() = cinemaDao.getAllShowtimes()
-    fun getcinemas() = cinemaDao.getAllCinemas()
-
-    fun getMovieById(movieId: Int) : Flow<Movies?> = cinemaDao.getMovieById(movieId)
-
-    fun getTicketById(ticketId: Int) = cinemaDao.getTicketById(ticketId)
-
-    suspend fun insertMovie(movie: Movies) = cinemaDao.insertMovie(movie)
+    fun getTickets(): Flow<List<Ticket>> = cinemaDao.getAllTickets()
+    fun getTicketById(ticketId: Int): Flow<Ticket?> = cinemaDao.getTicketById(ticketId)
 
     suspend fun insertTicket(ticket: Ticket) = cinemaDao.insertTicket(ticket)
-
-    suspend fun insertCinema(cinema: Cinema) = cinemaDao.insertCinema(cinema)
-
-    suspend fun insertShowtime(showtime: Showtime) = cinemaDao.insertShowtime(showtime)
-
-    suspend fun deleteMovie(movie: Movies) = cinemaDao.deleteMovie(movie)
-
+    suspend fun updateTicket(ticket: Ticket) = cinemaDao.updateTicket(ticket)
     suspend fun deleteTicket(ticket: Ticket) = cinemaDao.deleteTicket(ticket)
 
-    suspend fun updateMovie(movie: Movies) = cinemaDao.updateMovie(movie)
+    
+    fun getMovies(): Flow<List<Movies>> = cinemaDao.getAllMovies()
+    fun getMovieById(movieId: Int): Flow<Movies?> = cinemaDao.getMovieById(movieId)
 
-    suspend fun updateTicket(ticket: Ticket) = cinemaDao.updateTicket(ticket)
+    suspend fun insertMovie(movie: Movies) = cinemaDao.insertMovie(movie)
+    suspend fun deleteMovie(movie: Movies) = cinemaDao.deleteMovie(movie)
+
+
 }

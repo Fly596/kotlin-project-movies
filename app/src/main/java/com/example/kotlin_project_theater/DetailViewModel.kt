@@ -1,4 +1,4 @@
-package com.example.kotlin_project_theater.ui.home
+package com.example.kotlin_project_theater
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

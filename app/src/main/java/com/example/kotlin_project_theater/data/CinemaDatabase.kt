@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @TypeConverters(value = [DateConverter::class])
-@Database(entities = [Ticket::class, Movies::class, Cinema::class, Showtime::class], version = 1)
+@Database(entities = [Ticket::class, Movies::class], version = 1)
 abstract class CinemaDatabase : RoomDatabase() {
     abstract fun cinemaDao(): CinemaDao
 

@@ -1,5 +1,6 @@
-package com.example.kotlin_project_theater.ui
+package com.example.kotlin_project_theater.ui.home
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,21 +28,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.kotlin_project_theater.ui.home.HomeViewModel
 import com.example.kotlin_project_theater.R
 import com.example.kotlin_project_theater.data.Movies
 import com.example.kotlin_project_theater.data.TableData
+import com.example.kotlin_project_theater.ui.ticket.TicketActivity
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigate: (Int) -> Unit,
+    homeViewModel: HomeViewModel
 ) {
-    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val homeState = homeViewModel.state
 
     Scaffold(
@@ -81,9 +82,8 @@ fun HomeScreen(
                 }
             )
         },
-        modifier = modifier
 
-    ) { innerPadding ->
+        ) { innerPadding ->
 
         // Список прокатных фильмов.
         LazyVerticalStaggeredGrid(
@@ -94,7 +94,7 @@ fun HomeScreen(
                 .fillMaxSize()
         ) {
             items(TableData.moviesList) { movie ->
-                MovieCardItem(movie = movie, onClick = onNavigate)
+                MovieCardItem(movie = movie, viewModel = homeViewModel)
             }
         }
     }
@@ -104,18 +104,17 @@ fun HomeScreen(
 @Composable
 fun MovieCardItem(
     movie: Movies,
-    onClick: (Int) -> Unit,
-    onClickN: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel
 ) {
-    val viewModel = HomeViewModel()
 
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), modifier = modifier
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
@@ -147,10 +146,12 @@ fun MovieCardItem(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            val context = LocalContext.current
+            val intent = Intent(context, TicketActivity::class.java)
             // Кнопка для выбора фильма.
             Button(
                 onClick = {
-                    onClick(movie.movieId)
+                    context.startActivity(intent)
                 },
 
                 modifier = Modifier.fillMaxWidth(),
@@ -168,5 +169,5 @@ fun MovieCardItem(
 )
 @Composable
 private fun PreviewHomeScreen() {
-    HomeScreen(onNavigate = {})
+    // HomeScreen(onNavigate = {})
 }
