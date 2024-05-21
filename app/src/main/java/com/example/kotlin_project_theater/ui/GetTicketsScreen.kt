@@ -1,4 +1,4 @@
-package com.example.kotlin_project_theater.ui.home
+package com.example.kotlin_project_theater.ui
 
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
@@ -25,19 +25,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.kotlin_project_theater.CinemaViewModel
 import com.example.kotlin_project_theater.R
 
 @Composable
-fun GetTicketsScreen(viewModel: CinemaViewModel, movieId: Int) {
+fun GetTicketsScreen(movieId: Int) {
+//   val viewModel = viewModel(modelClass = CinemaViewModel::class.java)
 
-    val state = viewModel.state
-    val moviesList = state.movies
+    //val state = viewModel.state
+    //val moviesList = viewModel.getMovieById(movieId)
+
 
     Column {
 
-        MovieTitle(title = "movie.title")
+        //MovieTitle(title = moviesList[movieId].title)
 
         HorizontalDivider(Modifier.padding(vertical = 8.dp))
 
@@ -149,5 +149,5 @@ fun TimeOptionButton(time: String = "12:00 PM", onClick: () -> Unit = {}) {
 )
 @Composable
 private fun PreviewGetTicketsScreen() {
-    GetTicketsScreen(2)
+    //GetTicketsScreen(movieId = 2)
 }

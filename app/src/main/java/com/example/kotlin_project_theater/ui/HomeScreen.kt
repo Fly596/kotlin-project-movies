@@ -1,6 +1,5 @@
-package com.example.kotlin_project_theater.ui.home
+package com.example.kotlin_project_theater.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,17 +31,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.kotlin_project_theater.CinemaViewModel
+import com.example.kotlin_project_theater.ui.home.HomeViewModel
 import com.example.kotlin_project_theater.R
 import com.example.kotlin_project_theater.data.Movies
-import com.example.kotlin_project_theater.data.TableData.moviesList
+import com.example.kotlin_project_theater.data.TableData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(onMovieClick: (Int) -> Unit, modifier: Modifier = Modifier) {
-    val viewModel = viewModel(modelClass = CinemaViewModel::class.java)
-    val state = viewModel.state
-    val moviesList = state.movies
+fun HomeScreen(
+    onNavigate: (Int) -> Unit,
+) {
+    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    val homeState = homeViewModel.state
 
     Scaffold(
         topBar = {
@@ -54,17 +54,18 @@ fun HomeScreen(onMovieClick: (Int) -> Unit, modifier: Modifier = Modifier) {
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 ),
                 actions = {
+
 /*                     Button(onClick = {
                         viewModel.addCinema()
                     }) {
                         Text("Add Cinemas")
-                    }
-
-                    Button(onClick = {
-                        viewModel.addMovie()
-                    }) {
-                        Text("Add Movies")
                     } */
+
+                    /*                    Button(onClick = {
+                                           viewModel.addMovie()
+                                       }) {
+                                           Text("Add Movies")
+                                       } */
 
 
                     // Кнопка для просмотра купленных билетов.
@@ -92,47 +93,40 @@ fun HomeScreen(onMovieClick: (Int) -> Unit, modifier: Modifier = Modifier) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            // TODO:
-            items(state.movies){movie->
-                MovieCardItem(movie = movie, onClick = onMovieClick)
+            items(TableData.moviesList) { movie ->
+                MovieCardItem(movie = movie, onClick = onNavigate)
             }
-
-
- /*            items(4) { index ->
-                MovieCardItem(
-                    movie =  *//*TODO get data from db*//* moviesList[index],
-                    onClick = onMovieClick
-                )
-            } */
         }
     }
 }
 
 // Карточка фильма.
 @Composable
-fun MovieCardItem(movie: Movies, onClick: (Int) -> Unit, modifier: Modifier = Modifier) {
-    val viewModel = CinemaViewModel()
+fun MovieCardItem(
+    movie: Movies,
+    onClick: (Int) -> Unit,
+    onClickN: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    val viewModel = HomeViewModel()
 
     ElevatedCard(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        colors =
-        CardDefaults.elevatedCardColors(
+        colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
             // Постер
             Image(
-                painter = painterResource(id = movie.poster),
+                painter = painterResource(movie.poster),
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
-                modifier =
-                Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(0.75f)
                     .clip(MaterialTheme.shapes.medium)
@@ -171,11 +165,8 @@ fun MovieCardItem(movie: Movies, onClick: (Int) -> Unit, modifier: Modifier = Mo
 @Preview(
     name = "HomeScreen",
     device = "id:pixel_8",
-    showSystemUi = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
-    showBackground = true,
 )
 @Composable
 private fun PreviewHomeScreen() {
-    HomeScreen(onMovieClick = {})
+    HomeScreen(onNavigate = {})
 }

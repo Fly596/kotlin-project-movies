@@ -1,4 +1,4 @@
-package com.example.kotlin_project_theater.ui.home
+package com.example.kotlin_project_theater.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

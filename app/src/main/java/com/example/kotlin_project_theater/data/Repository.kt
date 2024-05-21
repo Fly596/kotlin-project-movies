@@ -1,12 +1,20 @@
 package com.example.kotlin_project_theater.data
 
+import kotlinx.coroutines.flow.Flow
+
 class Repository(private val cinemaDao: CinemaDao) {
+    // region renew
+    val moviesVal = cinemaDao.getAllMovies()
+
+    // endregion
+
+
     fun getmovies() = cinemaDao.getAllMovies()
     fun gettickets() = cinemaDao.getAllTickets()
     fun getshowTimes() = cinemaDao.getAllShowtimes()
     fun getcinemas() = cinemaDao.getAllCinemas()
 
-    fun getMovieById(movieId: Int) = cinemaDao.getMovieById(movieId)
+    fun getMovieById(movieId: Int) : Flow<Movies?> = cinemaDao.getMovieById(movieId)
 
     fun getTicketById(ticketId: Int) = cinemaDao.getTicketById(ticketId)
 

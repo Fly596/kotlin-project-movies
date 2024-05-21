@@ -5,14 +5,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.kotlin_project_theater.CinemaViewModel
 
 
-import com.example.kotlin_project_theater.ui.home.ConfirmPurchaseScreen
-import com.example.kotlin_project_theater.ui.home.GetTicketsScreen
-import com.example.kotlin_project_theater.ui.home.HomeScreen
-import com.example.kotlin_project_theater.ui.home.TicketOptionsScreen
-import kotlinx.serialization.Contextual
+import com.example.kotlin_project_theater.ui.GetTicketsScreen
+import com.example.kotlin_project_theater.ui.HomeScreen
+import com.example.kotlin_project_theater.ui.TicketOptionsScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -30,7 +27,7 @@ fun AppNavHostController() {
         // Начальный экран со списком фильмов.
         composable<HomeScreenA> {
             HomeScreen(
-                onMovieClick = {
+                onNavigate = {
                     navController.navigate(GetTicketsScreenB(it))
                 }
             )
@@ -40,7 +37,7 @@ fun AppNavHostController() {
         composable<GetTicketsScreenB> {
             val args = it.toRoute<GetTicketsScreenB>()
 
-            GetTicketsScreen(args.viewModel, args.selectedMovieId)
+            GetTicketsScreen(args.selectedMovieId)
         }
 
         // Экран с выбором типа билета (взрослый/детский)
@@ -57,7 +54,7 @@ fun AppNavHostController() {
 
 @Serializable object HomeScreenA
 
-@Serializable data class GetTicketsScreenB(@Contextual val viewModel: CinemaViewModel, val selectedMovieId: Int)
+@Serializable data class GetTicketsScreenB(val selectedMovieId: Int)
 
 @Serializable object TicketTypeScreenC
 

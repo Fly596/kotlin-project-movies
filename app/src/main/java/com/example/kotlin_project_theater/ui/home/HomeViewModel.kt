@@ -1,4 +1,4 @@
-package com.example.kotlin_project_theater
+package com.example.kotlin_project_theater.ui.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,17 +15,28 @@ import com.example.kotlin_project_theater.data.Ticket
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class CinemaViewModel(private val repository: Repository = Graph.repository) : ViewModel() {
+class HomeViewModel(
+    private val repository: Repository = Graph.repository
+) : ViewModel() {
 
-    var state by mutableStateOf(CinemaAppState())
+    // region renew
+    var state by mutableStateOf(HomeState())
         private set
-
-    // val cinemas = repository.cinemas
 
     init {
         getMovies()
-        getCinemas()
     }
+
+    private fun getMovies() {
+        viewModelScope.launch {
+            repository.moviesVal.collectLatest {
+                state = state.copy(movies = it)
+            }
+        }
+    }
+
+
+    // endregion
 
     private fun getCinemas() {
         viewModelScope.launch {
@@ -35,10 +46,10 @@ class CinemaViewModel(private val repository: Repository = Graph.repository) : V
         }
     }
 
-    private fun getMovies() {
+    fun getMovieById(movieId: Int) {
         viewModelScope.launch {
-            repository.getmovies().collectLatest {
-                state = state.copy(movies = it)
+            repository.getMovieById(movieId).collectLatest {
+                state = state.copy(selectedMovie = it)
             }
         }
     }
@@ -47,20 +58,12 @@ class CinemaViewModel(private val repository: Repository = Graph.repository) : V
         } */
 
 
-
     fun addMovie() {
         viewModelScope.launch {
             TableData.moviesList.forEach { movie -> repository.insertMovie(movie) }
         }
     }
 
-    fun addCinema() {
-        viewModelScope.launch {
-            TableData.cinemasList.forEach { cinema ->
-                repository.insertCinema(cinema)
-            }
-        }
-    }
 
     fun convertMinToHoursMin(minutes: Int): String {
         val hours = minutes / 60
@@ -70,9 +73,11 @@ class CinemaViewModel(private val repository: Repository = Graph.repository) : V
     }
 }
 
-data class CinemaAppState(
+data class HomeState(
     val movies: List<Movies> = emptyList(),
     val cinemas: List<Cinema> = emptyList(),
     val showTimes: List<Showtime> = emptyList(),
-    val tickets: List<Ticket> = emptyList()
+    val tickets: List<Ticket> = emptyList(),
+    val selectedMovie: Movies? = null
+
 )
