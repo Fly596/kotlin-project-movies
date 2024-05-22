@@ -32,23 +32,3 @@ data class Ticket(
     val seat: Int,
     val personEmail: String
 )
-
-/* @Entity(
-    tableName = "Ticket",
-    foreignKeys =
-    [
-        ForeignKey(
-            entity = Showtime::class,
-            parentColumns = ["showtimeId"],
-            childColumns = ["showtimeId"],
-            onDelete = ForeignKey.CASCADE
-        )]
-)
-data class Ticket(
-    @ColumnInfo(name = "ticketId") @PrimaryKey(autoGenerate = true) val ticketId: Int = 0,
-    val showtimeId: Int,
-    val date: Date,
-    val seat: Int,
-    val personName: String,
-    val personPhone: String
-) */

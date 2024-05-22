@@ -34,15 +34,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kotlin_project_theater.R
 import com.example.kotlin_project_theater.data.Movies
-import com.example.kotlin_project_theater.data.TableData
 import com.example.kotlin_project_theater.ui.ticket.TicketActivity
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    homeViewModel: HomeViewModel
-) {
+fun HomeScreen(homeViewModel: HomeViewModel) {
     val homeState = homeViewModel.state
 
     Scaffold(
@@ -56,11 +53,11 @@ fun HomeScreen(
                 ),
                 actions = {
 
-/*                     Button(onClick = {
-                        viewModel.addCinema()
+                    Button(onClick = {
+                        homeViewModel.addMovie()
                     }) {
-                        Text("Add Cinemas")
-                    } */
+                        Text("Add Movies")
+                    }
 
                     /*                    Button(onClick = {
                                            viewModel.addMovie()
@@ -68,11 +65,8 @@ fun HomeScreen(
                                            Text("Add Movies")
                                        } */
 
-
                     // Кнопка для просмотра купленных билетов.
-                    IconButton(
-                        onClick = { /* TODO: Handle ticket icon action */ },
-                    ) {
+                    IconButton(onClick = { /* TODO: Handle ticket icon action */ }) {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_tickets_fill),
                             contentDescription = "Tickets",
@@ -82,18 +76,17 @@ fun HomeScreen(
                 }
             )
         },
+    ) { innerPadding ->
 
-        ) { innerPadding ->
-
-        // Список прокатных фильмов.
+        // Список фильмов в прокате.
         LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Adaptive(minSize = 128.dp),
+            columns = StaggeredGridCells.Adaptive(minSize = 156.dp),
             contentPadding = PaddingValues(all = 16.dp),
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            items(TableData.moviesList) { movie ->
+            items(homeState.movies) { movie ->
                 MovieCardItem(movie = movie, viewModel = homeViewModel)
             }
         }
@@ -104,10 +97,9 @@ fun HomeScreen(
 @Composable
 fun MovieCardItem(
     movie: Movies,
+    viewModel: HomeViewModel,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
 ) {
-
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -148,12 +140,17 @@ fun MovieCardItem(
 
             val context = LocalContext.current
             val intent = Intent(context, TicketActivity::class.java)
+
             // Кнопка для выбора фильма.
             Button(
                 onClick = {
+
+                    // передача id выбранного фильма.
+                    intent.putExtra("movieId", movie.movieId)
+
+                    // запуск активити.
                     context.startActivity(intent)
                 },
-
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium
             ) {

@@ -1,6 +1,5 @@
 package com.example.kotlin_project_theater.ui.home
 
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -22,7 +21,6 @@ class HomeViewModel(private val repository: Repository = Graph.repository) : Vie
         getMovies()
     }
 
-
     fun addMovie() {
         viewModelScope.launch {
             TableData.moviesList.forEach { movie -> repository.insertMovie(movie) }
@@ -37,9 +35,9 @@ class HomeViewModel(private val repository: Repository = Graph.repository) : Vie
         }
     }
 
-    fun convertMinToHoursMin(minutes: Int): String {
-        val hours = minutes / 60
-        val mins = minutes % 60
+    fun convertMinToHoursMin(minutes: Int = 0): String {
+        val hours = minutes.div(60)
+        val mins = minutes.rem(60)
 
         return "$hours H $mins MIN"
     }

@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.kotlin_project_theater.data.Cinema
 import com.example.kotlin_project_theater.data.Graph
 import com.example.kotlin_project_theater.data.Repository
-import com.example.kotlin_project_theater.data.TableData
 import com.example.kotlin_project_theater.data.Ticket
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -26,17 +25,17 @@ constructor(
         state = state.copy(time = newVal)
     }
 
-    fun onCinemaChange(newVal: Cinema) {
+/*     fun onCinemaChange(newVal: Cinema) {
         state = state.copy(selectedCinema = newVal)
-    }
+    } */
 
-    fun addCinema() {
+/*     fun addCinema() {
         viewModelScope.launch {
             TableData.cinemasList.forEach { cinema ->
                 repository.insertCinema(cinema)
             }
         }
-    }
+    } */
 
     fun addTicket() {
         viewModelScope.launch {
@@ -46,7 +45,6 @@ constructor(
                     time = state.time,
                     date = state.date,
                     seat = state.seat,
-                    personName = state.personName,
                     personEmail = state.personEmail
                 )
             )

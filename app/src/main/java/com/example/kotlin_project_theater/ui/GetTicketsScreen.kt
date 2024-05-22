@@ -47,7 +47,7 @@ fun GetTicketsScreen(movieId: Int) {
                 .padding(horizontal = 16.dp),
         ) {
             items(4) {
-                CinemaCard()
+                CinemaCardOld()
             }
         }
     }
@@ -82,7 +82,7 @@ fun MovieTitle(
 
 
 @Composable
-fun CinemaCard(
+fun CinemaCardOld(
     cinemaName: String = "CinemaName",
     cinemaAddress: String = "Address",
     modifier: Modifier = Modifier

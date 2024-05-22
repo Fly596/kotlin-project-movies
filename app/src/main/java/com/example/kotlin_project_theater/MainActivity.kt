@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.kotlin_project_theater.Navigation.AppNavHostController
 import com.example.kotlin_project_theater.ui.home.HomeViewModel
 import com.example.kotlin_project_theater.ui.theme.AppTheaterTheme
 
@@ -26,7 +25,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
                 ) {
-                    AppNavHostController()
+                    //AppNavHostController()
                     //HomeScreen(onMovieClick = {})
                     // GetTicketsScreen()
                 }

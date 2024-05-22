@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CinemaDao {
 
-    // Ticket.
+    // Для билетов.
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTicket(ticket: Ticket)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update()
     suspend fun updateTicket(ticket: Ticket)
 
     @Delete
@@ -27,7 +27,8 @@ interface CinemaDao {
     @Query("SELECT * FROM Ticket WHERE ticketId = :ticketId")
     fun getTicketById(ticketId: Int): Flow<Ticket>
 
-    // Movies
+
+    // Для фильмов.
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMovie(movie: Movies)
 
