@@ -74,6 +74,7 @@ fun TicketOptionItem(type: String) {
     }
 } */
 
+/*
 // Выбор типа билета (взрослый/детский)
 @Composable
 fun TicketOptionsScreen(
@@ -100,7 +101,9 @@ fun TicketOptionsScreen(
             TicketOptions()
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { */
+/*TODO*//*
+ },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -145,4 +148,4 @@ fun TicketOptionItem(type: String) {
 @Composable
 private fun PreviewTicketOptionsScreen() {
     TicketOptionsScreen()
-}
+}*/
