@@ -19,29 +19,24 @@ class CinemasViewModel(private val repository: Repository = Graph.repository) : 
     var state by mutableStateOf(PurchaseState())
         private set
 
-    fun setMovieById(id: Int){
+    fun setMovieById(id: Int) {
         viewModelScope.launch {
-            repository.getMovieById(id).collectLatest {
-                state = state.copy(movie = it)
-            }
+            repository.getMovieById(id).collectLatest { state = state.copy(movie = it) }
         }
     }
 
-    fun setTime(time: String){
-        viewModelScope.launch {
-            state = state.copy(time = time)
-        }
+    fun setTime(time: String) {
+        viewModelScope.launch { state = state.copy(time = time) }
     }
 
-    fun setDate(date: String){
-        viewModelScope.launch {
-            state = state.copy(date = date)
-        }
+    fun setDate(date: String) {
+        viewModelScope.launch { state = state.copy(date = date) }
     }
-    fun addTicket(){
+
+    fun addTicket() {
         viewModelScope.launch {
 
-            //repository.insertTicket(ticket = Ticket())
+            // repository.insertTicket(ticket = Ticket())
         }
     }
 }
@@ -65,15 +60,15 @@ data class MovieDetails(
     val price: Float = 0.0f
 )
 
-fun MovieDetails.toMovie(): Movies = Movies(
-    movieId = id,
-    title = title,
-    year = year,
-    length = length,
-    description = description,
-    poster = poster,
-    price = price
-)
+fun MovieDetails.toMovie(): Movies =
+    Movies(
+        movieId = id,
+        title = title,
+        year = year,
+        length = length,
+        description = description,
+        poster = poster,
+        price = price)
 
 /*
 fun MovieDetails.toMovieState(): PurchaseState = PurchaseState(

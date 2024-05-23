@@ -16,39 +16,27 @@ class TicketViewModel(private val repository: Repository = Graph.repository) : V
         private set
 
     fun addTicket(ticket: Ticket) {
-        viewModelScope.launch {
-            repository.insertTicket(ticket)
-        }
+        viewModelScope.launch { repository.insertTicket(ticket) }
     }
 
-    fun setTime(time: String){
-        viewModelScope.launch {
-            state = state.copy(time = time)
-        }
+    fun setTime(time: String) {
+        viewModelScope.launch { state = state.copy(time = time) }
     }
 
-    fun setDate(date: String){
-        viewModelScope.launch {
-            state = state.copy(date = date)
-        }
+    fun setDate(date: String) {
+        viewModelScope.launch { state = state.copy(date = date) }
     }
 
-    fun setMovieName(movieName: String){
-        viewModelScope.launch {
-            state = state.copy(movie = movieName)
-        }
+    fun setMovieName(movieName: String) {
+        viewModelScope.launch { state = state.copy(movie = movieName) }
     }
 
-    fun setCinemaName(cinemaName: String){
-        viewModelScope.launch {
-            state = state.copy(cinemaName = cinemaName)
-        }
+    fun setCinemaName(cinemaName: String) {
+        viewModelScope.launch { state = state.copy(cinemaName = cinemaName) }
     }
 
-    fun setPrice(price: Float){
-        viewModelScope.launch {
-            state = state.copy(price = price)
-        }
+    fun setPrice(price: Float) {
+        viewModelScope.launch { state = state.copy(price = price) }
     }
 }
 

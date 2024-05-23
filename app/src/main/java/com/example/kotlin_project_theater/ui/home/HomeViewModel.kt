@@ -30,30 +30,22 @@ class HomeViewModel(private val repository: Repository = Graph.repository) : Vie
 
     private fun getMovies() {
         viewModelScope.launch {
-            repository.getMovies().collectLatest {
-                state = state.copy(movies = it)
-            }
+            repository.getMovies().collectLatest { state = state.copy(movies = it) }
         }
     }
 
     fun getTickets() {
         viewModelScope.launch {
-            repository.getTickets().collectLatest {
-                state = state.copy(tickets = it)
-            }
+            repository.getTickets().collectLatest { state = state.copy(tickets = it) }
         }
     }
 
-    fun editTicket(ticket: Ticket){
-        viewModelScope.launch {
-            repository.updateTicket(ticket)
-        }
+    fun editTicket(ticket: Ticket) {
+        viewModelScope.launch { repository.updateTicket(ticket) }
     }
 
-    fun deleteTicket(ticket: Ticket){
-        viewModelScope.launch {
-            repository.deleteTicket(ticket)
-        }
+    fun deleteTicket(ticket: Ticket) {
+        viewModelScope.launch { repository.deleteTicket(ticket) }
     }
 
     fun convertMinToHoursMin(minutes: Int = 0): String {

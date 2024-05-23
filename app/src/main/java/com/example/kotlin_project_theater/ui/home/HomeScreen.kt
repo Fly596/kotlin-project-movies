@@ -37,7 +37,6 @@ import com.example.kotlin_project_theater.data.Movies
 import com.example.kotlin_project_theater.ui.TicketsListActivity
 import com.example.kotlin_project_theater.ui.purchase.CinemasActivity
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel) {
@@ -51,30 +50,20 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             CenterAlignedTopAppBar(
                 title = { Text("Now Playing", style = MaterialTheme.typography.headlineMedium) },
                 colors =
-                TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
+                    TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer),
                 actions = {
-
-                    Button(onClick = {
-                        homeViewModel.addMovie()
-                    }) {
-                        Text("Add Movies")
-                    }
+                    Button(onClick = { homeViewModel.addMovie() }) { Text("Add Movies") }
 
                     // Кнопка для просмотра купленных билетов.
-                    IconButton(onClick = {
-                        context.startActivity(intent)
-                    }) {
+                    IconButton(onClick = { context.startActivity(intent) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_tickets_fill),
                             contentDescription = "Tickets",
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
-                }
-            )
+                })
         },
     ) { innerPadding ->
 
@@ -82,14 +71,11 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(minSize = 156.dp),
             contentPadding = PaddingValues(all = 16.dp),
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            items(homeState.movies) { movie ->
-                MovieCardItem(movie = movie, viewModel = homeViewModel)
+            modifier = Modifier.padding(innerPadding).fillMaxSize()) {
+                items(homeState.movies) { movie ->
+                    MovieCardItem(movie = movie, viewModel = homeViewModel)
+                }
             }
-        }
     }
 }
 
@@ -101,63 +87,57 @@ fun MovieCardItem(
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        ),
+        colors =
+            CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        modifier = modifier.fillMaxWidth().padding(8.dp)) {
+            Column(modifier = Modifier.padding(16.dp)) {
 
-            // Постер.
-            Image(
-                painter = painterResource(movie.poster),
-                contentDescription = movie.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(0.75f)
-                    .clip(MaterialTheme.shapes.medium)
-            )
+                // Постер.
+                Image(
+                    painter = painterResource(movie.poster),
+                    contentDescription = movie.title,
+                    contentScale = ContentScale.Crop,
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .aspectRatio(0.75f)
+                            .clip(MaterialTheme.shapes.medium))
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            // Краткая инфа о фильме: название и длина.
-            Text(
-                text = movie.title,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
-            Text(
-                text = "${viewModel.convertMinToHoursMin(movie.length)} | Released ${movie.year}",
-                style = MaterialTheme.typography.bodySmall
-            )
+                // Краткая инфа о фильме: название и длина.
+                Text(
+                    text = movie.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 4.dp))
+                Text(
+                    text =
+                        "${viewModel.convertMinToHoursMin(movie.length)} | Released ${movie.year}",
+                    style = MaterialTheme.typography.bodySmall)
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            val context = LocalContext.current
-            val intent = Intent(context, CinemasActivity::class.java)
+                val context = LocalContext.current
+                val intent = Intent(context, CinemasActivity::class.java)
 
-            // Кнопка для выбора фильма.
-            Button(
-                onClick = {
+                // Кнопка для выбора фильма.
+                Button(
+                    onClick = {
 
-                    // передача id выбранного фильма.
-                    intent.putExtra("movieId", movie.movieId)
+                        // передача id выбранного фильма.
+                        intent.putExtra("movieId", movie.movieId)
 
-                    // запуск активити.
-                    context.startActivity(intent)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Text("$${movie.price}")
+                        // запуск активити.
+                        context.startActivity(intent)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium) {
+                        Text("$${movie.price}")
+                    }
             }
         }
-    }
 }
 
 @Preview(

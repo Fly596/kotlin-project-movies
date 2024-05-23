@@ -247,8 +247,3 @@ val gibraltarSeaDarkHighContrast = Color(0xFFF9FBFF)
 val onGibraltarSeaDarkHighContrast = Color(0xFF000000)
 val gibraltarSeaContainerDarkHighContrast = Color(0xFF9DD0FE)
 val onGibraltarSeaContainerDarkHighContrast = Color(0xFF000000)
-
-
-
-
-

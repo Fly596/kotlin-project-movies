@@ -52,7 +52,6 @@ class CinemasActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             val movieId: Int = intent.getIntExtra("movieId", 1)
             val cinemasViewModel: CinemasViewModel =
                 viewModel(modelClass = CinemasViewModel::class.java)
@@ -66,11 +65,7 @@ class CinemasActivity : ComponentActivity() {
             ticketsViewModel.setMovieName(cinemasViewModel.state.movie.title)
             ticketsViewModel.setPrice(cinemasViewModel.state.movie.price)
 
-            AppTheaterTheme {
-                Surface {
-                    CinemasScreen(ticketsViewModel)
-                }
-            }
+            AppTheaterTheme { Surface { CinemasScreen(ticketsViewModel) } }
         }
     }
 }
@@ -87,88 +82,74 @@ fun CinemasScreen(viewModel: TicketViewModel) {
         HorizontalDivider(Modifier.padding(vertical = 8.dp))
 
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         ) {
-            items(TableData.cinemasList) { cinema ->
-                CinemaCard(cinema, viewModel)
-            }
+            items(TableData.cinemasList) { cinema -> CinemaCard(cinema, viewModel) }
         }
     }
-
 }
 
 @Composable
-fun CinemaCard(
-    cinema: Cinema,
-    viewModel: TicketViewModel,
-    modifier: Modifier = Modifier
-) {
+fun CinemaCard(cinema: Cinema, viewModel: TicketViewModel, modifier: Modifier = Modifier) {
     Card(modifier = modifier.padding(vertical = 16.dp)) {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth()
-        ) {
+            modifier = Modifier.padding(12.dp).fillMaxWidth()) {
 
-            // Название и адрес кинотеатра.
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                // Название театра.
-                Text(text = cinema.name, style = MaterialTheme.typography.headlineMedium)
+                // Название и адрес кинотеатра.
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Название театра.
+                    Text(text = cinema.name, style = MaterialTheme.typography.headlineMedium)
 
-                // Адрес.
-                Text(
-                    text = "Address: ${cinema.location}",
-                    style = MaterialTheme.typography.headlineSmall
-                )
+                    // Адрес.
+                    Text(
+                        text = "Address: ${cinema.location}",
+                        style = MaterialTheme.typography.headlineSmall)
+                }
+
+                // Разделитель между секциями.
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    color = MaterialTheme.colorScheme.onSurface)
+
+                // Выбор даты
+                Text(text = "Date", style = MaterialTheme.typography.headlineSmall)
+                val today = LocalDate.now()
+                val dateChoices =
+                    listOf(
+                        today.plusDays(1.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d")),
+                        today.plusDays(2.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d")),
+                        today.plusDays(3.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d")))
+                var selectedDate by remember { mutableStateOf("") }
+                RadioButtonsRow(dateChoices, onValueSelected = { selectedDate = it })
+
+                Spacer(modifier = Modifier.size(12.dp))
+
+                // выбор времени
+                Text(text = "Time", style = MaterialTheme.typography.headlineSmall)
+                val timeChoices = listOf("12:00 PM", "03:00 PM", "09:00 PM")
+                var selectedTime by remember { mutableStateOf("") }
+                RadioButtonsRow(timeChoices, onValueSelected = { selectedTime = it })
+
+                val context = LocalContext.current
+                val intent = Intent(context, TicketActivity::class.java)
+                Button(
+                    onClick = {
+                        intent.putExtra("cinemaName", cinema.name)
+                        intent.putExtra("time", selectedTime)
+                        intent.putExtra("date", selectedDate)
+                        intent.putExtra("movie", viewModel.state.movie)
+                        intent.putExtra("price", viewModel.state.price)
+
+                        /*                 viewModel.setTime(selectedTime)
+                        viewModel.setDate(selectedDate)
+                        viewModel.setCinemaName(cinema.name) */
+
+                        context.startActivity(intent)
+                    }) {
+                        Text(text = "Confirm")
+                    }
             }
-
-            // Разделитель между секциями.
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = 8.dp),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            // Выбор даты
-            Text(text = "Date", style = MaterialTheme.typography.headlineSmall)
-            val today = LocalDate.now()
-            val dateChoices = listOf(
-                today.plusDays(1.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d")),
-                today.plusDays(2.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d")),
-                today.plusDays(3.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d"))
-            )
-            var selectedDate by remember { mutableStateOf("") }
-            RadioButtonsRow(dateChoices, onValueSelected = { selectedDate = it })
-
-            Spacer(modifier = Modifier.size(12.dp))
-
-            // выбор времени
-            Text(text = "Time", style = MaterialTheme.typography.headlineSmall)
-            val timeChoices = listOf("12:00 PM", "03:00 PM", "09:00 PM")
-            var selectedTime by remember { mutableStateOf("") }
-            RadioButtonsRow(timeChoices, onValueSelected = { selectedTime = it })
-
-            val context = LocalContext.current
-            val intent = Intent(context, TicketActivity::class.java)
-            Button(onClick = {
-                intent.putExtra("cinemaName", cinema.name)
-                intent.putExtra("time", selectedTime)
-                intent.putExtra("date", selectedDate)
-                intent.putExtra("movie", viewModel.state.movie)
-                intent.putExtra("price", viewModel.state.price)
-
-/*                 viewModel.setTime(selectedTime)
-                viewModel.setDate(selectedDate)
-                viewModel.setCinemaName(cinema.name) */
-
-                context.startActivity(intent)
-            }) {
-                Text(text = "Confirm")
-            }
-
-        }
     }
 }
 
@@ -182,22 +163,19 @@ fun RadioButtonsRow(
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        options.forEach { option ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = option)
-                RadioButton(
-                    selected = selectedValue.value == option,
-                    onClick = {
-                        selectedValue.value = option
-                        onValueSelected(option)
-                    }
-                )
+        verticalAlignment = Alignment.CenterVertically) {
+            options.forEach { option ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = option)
+                    RadioButton(
+                        selected = selectedValue.value == option,
+                        onClick = {
+                            selectedValue.value = option
+                            onValueSelected(option)
+                        })
+                }
             }
-
         }
-    }
 }
 
 // строка с кнопками выбора времени.
@@ -208,13 +186,8 @@ fun PickTimeButtonsRow() {
     Column {
         Text(text = "Available time", style = MaterialTheme.typography.titleMedium)
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            timeChoices.forEach { timeOp ->
-                TimeOptionButton(time = timeOp)
-            }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            timeChoices.forEach { timeOp -> TimeOptionButton(time = timeOp) }
         }
     }
 }
@@ -233,11 +206,11 @@ fun TimeOptionButton(time: String) {
             // запуск активити.
             context.startActivity(intent)
         },
-        shape = RoundedCornerShape(4.dp)
-    ) {
-        Text(text = time)
-    }
+        shape = RoundedCornerShape(4.dp)) {
+            Text(text = time)
+        }
 }
+
 @Composable
 fun MovieTitle(
     @DrawableRes image: Int = R.drawable.the_neon_demon_2016,
@@ -247,26 +220,22 @@ fun MovieTitle(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Image(
-            painter = painterResource(image),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(shape = androidx.compose.foundation.shape.CircleShape)
-                .size(64.dp)
-        )
-        Text(text = title, style = MaterialTheme.typography.headlineLarge)
-
-    }
+        modifier = modifier.fillMaxWidth().padding(16.dp)) {
+            Image(
+                painter = painterResource(image),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier =
+                    Modifier.clip(shape = androidx.compose.foundation.shape.CircleShape)
+                        .size(64.dp))
+            Text(text = title, style = MaterialTheme.typography.headlineLarge)
+        }
 }
+
 @Preview
 @Composable
 private fun PreviewTicketScreen() {
     AppTheaterTheme {
-        //CinemasScreen()
+        // CinemasScreen()
     }
 }

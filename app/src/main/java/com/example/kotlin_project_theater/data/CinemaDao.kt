@@ -12,31 +12,23 @@ import kotlinx.coroutines.flow.Flow
 interface CinemaDao {
 
     // Для билетов.
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertTicket(ticket: Ticket)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertTicket(ticket: Ticket)
 
-    @Update()
-    suspend fun updateTicket(ticket: Ticket)
+    @Update() suspend fun updateTicket(ticket: Ticket)
 
-    @Delete
-    suspend fun deleteTicket(ticket: Ticket)
+    @Delete suspend fun deleteTicket(ticket: Ticket)
 
-    @Query("SELECT * FROM Ticket")
-    fun getAllTickets(): Flow<List<Ticket>>
+    @Query("SELECT * FROM Ticket") fun getAllTickets(): Flow<List<Ticket>>
 
     @Query("SELECT * FROM Ticket WHERE ticketId = :ticketId")
     fun getTicketById(ticketId: Int): Flow<Ticket>
 
-
     // Для фильмов.
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertMovie(movie: Movies)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertMovie(movie: Movies)
 
-    @Delete
-    suspend fun deleteMovie(movie: Movies)
+    @Delete suspend fun deleteMovie(movie: Movies)
 
-    @Query("SELECT * FROM Movies")
-    fun getAllMovies(): Flow<List<Movies>>
+    @Query("SELECT * FROM Movies") fun getAllMovies(): Flow<List<Movies>>
 
     @Query("SELECT * FROM Movies WHERE movieId = :movieId")
     fun getMovieById(movieId: Int): Flow<Movies>

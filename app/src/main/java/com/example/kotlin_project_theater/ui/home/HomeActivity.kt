@@ -14,10 +14,7 @@ class HomeActivity : ComponentActivity() {
         setContent {
             val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
 
-            AppTheaterTheme {
-                HomeScreen(viewModel)
-
-            }
+            AppTheaterTheme { HomeScreen(viewModel) }
         }
     }
 }
