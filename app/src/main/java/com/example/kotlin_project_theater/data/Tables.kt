@@ -26,11 +26,11 @@ data class Ticket(
     @ColumnInfo(name = "ticketId")
     @PrimaryKey(autoGenerate = true)
     val ticketId: Int = 0,
-    val cinemaName: String,
-    val time: String,
-    val date: String,
+    val cinemaName: String,//
+    val time: String,//
+    val date: String, //
     val seat: Int,
     val personEmail: String,
-    val price: Float,
-    val movie: String
+    val price: Float, //
+    val movie: String //
 )

@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kotlin_project_theater.R
 import com.example.kotlin_project_theater.data.Movies
+import com.example.kotlin_project_theater.ui.TicketsListActivity
 import com.example.kotlin_project_theater.ui.purchase.CinemasActivity
 
 
@@ -41,6 +42,9 @@ import com.example.kotlin_project_theater.ui.purchase.CinemasActivity
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel) {
     val homeState = homeViewModel.state
+
+    val context = LocalContext.current
+    val intent = Intent(context, TicketsListActivity::class.java)
 
     Scaffold(
         topBar = {
@@ -59,14 +63,10 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                         Text("Add Movies")
                     }
 
-                    /*                    Button(onClick = {
-                                           viewModel.addMovie()
-                                       }) {
-                                           Text("Add Movies")
-                                       } */
-
                     // Кнопка для просмотра купленных билетов.
-                    IconButton(onClick = { /* TODO: Handle ticket icon action */ }) {
+                    IconButton(onClick = {
+                        context.startActivity(intent)
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_tickets_fill),
                             contentDescription = "Tickets",

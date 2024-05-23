@@ -11,7 +11,6 @@ import com.example.kotlin_project_theater.data.Graph
 import com.example.kotlin_project_theater.data.Movies
 import com.example.kotlin_project_theater.data.Repository
 import com.example.kotlin_project_theater.data.TableData
-import com.example.kotlin_project_theater.data.Ticket
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -20,7 +19,7 @@ class CinemasViewModel(private val repository: Repository = Graph.repository) : 
     var state by mutableStateOf(PurchaseState())
         private set
 
-    fun getMovieById(id: Int){
+    fun setMovieById(id: Int){
         viewModelScope.launch {
             repository.getMovieById(id).collectLatest {
                 state = state.copy(movie = it)

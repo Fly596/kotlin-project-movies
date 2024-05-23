@@ -9,6 +9,7 @@ import com.example.kotlin_project_theater.data.Graph
 import com.example.kotlin_project_theater.data.Movies
 import com.example.kotlin_project_theater.data.Repository
 import com.example.kotlin_project_theater.data.TableData
+import com.example.kotlin_project_theater.data.Ticket
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -35,6 +36,26 @@ class HomeViewModel(private val repository: Repository = Graph.repository) : Vie
         }
     }
 
+    fun getTickets() {
+        viewModelScope.launch {
+            repository.getTickets().collectLatest {
+                state = state.copy(tickets = it)
+            }
+        }
+    }
+
+    fun editTicket(ticket: Ticket){
+        viewModelScope.launch {
+            repository.updateTicket(ticket)
+        }
+    }
+
+    fun deleteTicket(ticket: Ticket){
+        viewModelScope.launch {
+            repository.deleteTicket(ticket)
+        }
+    }
+
     fun convertMinToHoursMin(minutes: Int = 0): String {
         val hours = minutes.div(60)
         val mins = minutes.rem(60)
@@ -45,6 +66,7 @@ class HomeViewModel(private val repository: Repository = Graph.repository) : Vie
 
 data class HomeStateN(
     val movies: List<Movies> = emptyList(),
+    val tickets: List<Ticket> = emptyList()
 )
 
 /* data class HomeState(

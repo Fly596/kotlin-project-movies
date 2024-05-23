@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -31,13 +33,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kotlin_project_theater.R
 import com.example.kotlin_project_theater.data.Cinema
 import com.example.kotlin_project_theater.data.TableData
-import com.example.kotlin_project_theater.ui.MovieTitle
 import com.example.kotlin_project_theater.ui.theme.AppTheaterTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -46,8 +51,8 @@ class CinemasActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
+
             val movieId: Int = intent.getIntExtra("movieId", 1)
             val cinemasViewModel: CinemasViewModel =
                 viewModel(modelClass = CinemasViewModel::class.java)
@@ -55,11 +60,15 @@ class CinemasActivity : ComponentActivity() {
             val ticketsViewModel: TicketViewModel =
                 viewModel(modelClass = TicketViewModel::class.java)
 
-            cinemasViewModel.getMovieById(movieId)
+            cinemasViewModel.setMovieById(movieId)
+
+            // установка имени и цены фильма для state.
+            ticketsViewModel.setMovieName(cinemasViewModel.state.movie.title)
+            ticketsViewModel.setPrice(cinemasViewModel.state.movie.price)
 
             AppTheaterTheme {
                 Surface {
-                    CinemasScreen(cinemasViewModel)
+                    CinemasScreen(ticketsViewModel)
                 }
             }
         }
@@ -67,13 +76,13 @@ class CinemasActivity : ComponentActivity() {
 }
 
 @Composable
-fun CinemasScreen(viewModel: CinemasViewModel = CinemasViewModel()) {
+fun CinemasScreen(viewModel: TicketViewModel) {
     val state = viewModel.state
 
     Column {
 
         // Заголовок страницы.
-        MovieTitle(title = state.movie.title)
+        MovieTitle(title = state.movie)
 
         HorizontalDivider(Modifier.padding(vertical = 8.dp))
 
@@ -83,7 +92,7 @@ fun CinemasScreen(viewModel: CinemasViewModel = CinemasViewModel()) {
                 .padding(horizontal = 16.dp),
         ) {
             items(TableData.cinemasList) { cinema ->
-                CinemaCard(state, cinema)
+                CinemaCard(cinema, viewModel)
             }
         }
     }
@@ -92,9 +101,8 @@ fun CinemasScreen(viewModel: CinemasViewModel = CinemasViewModel()) {
 
 @Composable
 fun CinemaCard(
-    state: PurchaseState,
     cinema: Cinema,
-    viewModel: TicketViewModel = TicketViewModel(),
+    viewModel: TicketViewModel,
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.padding(vertical = 16.dp)) {
@@ -145,8 +153,15 @@ fun CinemaCard(
             val context = LocalContext.current
             val intent = Intent(context, TicketActivity::class.java)
             Button(onClick = {
-                viewModel.setTime(selectedTime)
+                intent.putExtra("cinemaName", cinema.name)
+                intent.putExtra("time", selectedTime)
+                intent.putExtra("date", selectedDate)
+                intent.putExtra("movie", viewModel.state.movie)
+                intent.putExtra("price", viewModel.state.price)
+
+/*                 viewModel.setTime(selectedTime)
                 viewModel.setDate(selectedDate)
+                viewModel.setCinemaName(cinema.name) */
 
                 context.startActivity(intent)
             }) {
@@ -184,40 +199,6 @@ fun RadioButtonsRow(
         }
     }
 }
-
-/* @Composable
-fun PickDateRadioButtonsRow(date: String, onDatePick: (String) -> Unit) {
-
-    Row {
-        RadioButtonWithText(1, date, onClick = onDatePick)
-        RadioButtonWithText(2, date, onClick = onDatePick)
-        RadioButtonWithText(3, date, onClick = onDatePick)
-    }
-} */
-
-// компонент радио батона с текстом слева.
-/* @Composable
-private fun RadioButtonWithText(
-    index: Int,
-    selectedDate: String,
-    onClick: (String) -> Unit
-) {
-    val today = LocalDate.now()
-    val dateIndexed = today.plusDays(index.toLong())
-    val formated = dateIndexed.format(DateTimeFormatter.ofPattern("MM.d"))
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = formated)
-
-        RadioButton(
-            selected = selectedDate == formated.toString(),
-            onClick = { selectedDate = formated }
-        )
-    }
-
-} */
 
 // строка с кнопками выбора времени.
 @Composable
@@ -257,11 +238,35 @@ fun TimeOptionButton(time: String) {
         Text(text = time)
     }
 }
+@Composable
+fun MovieTitle(
+    @DrawableRes image: Int = R.drawable.the_neon_demon_2016,
+    title: String = "movie Title",
+    modifier: Modifier = Modifier
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Image(
+            painter = painterResource(image),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .clip(shape = androidx.compose.foundation.shape.CircleShape)
+                .size(64.dp)
+        )
+        Text(text = title, style = MaterialTheme.typography.headlineLarge)
 
+    }
+}
 @Preview
 @Composable
 private fun PreviewTicketScreen() {
     AppTheaterTheme {
-        CinemasScreen()
+        //CinemasScreen()
     }
 }

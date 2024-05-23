@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -41,8 +43,20 @@ class TicketActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-
             val ticketViewModel = viewModel(modelClass = TicketViewModel::class.java)
+
+            val cinemaName: String = intent.getStringExtra("cinemaName").toString()
+            val time: String = intent.getStringExtra("time").toString()
+            val date: String = intent.getStringExtra("date").toString()
+            val movie: String = intent.getStringExtra("movie").toString()
+            val price: Float = intent.getFloatExtra("price",0.0f)
+
+
+            ticketViewModel.setCinemaName(cinemaName)
+            ticketViewModel.setTime(time)
+            ticketViewModel.setDate(date)
+            ticketViewModel.setMovieName(movie)
+            ticketViewModel.setPrice(price)
 
             AppTheaterTheme {
                 Surface {
@@ -56,7 +70,7 @@ class TicketActivity : ComponentActivity() {
 // Выбор типа билета (взрослый/детский)
 @Composable
 fun TicketScreen(
-    viewModel: TicketViewModel = TicketViewModel(),
+    viewModel: TicketViewModel,
     onPurchaseClicked: () -> Unit = {}
 ) {
     val state = viewModel.state
@@ -124,13 +138,14 @@ fun TicketScreen(
                             date = state.date,
                             seat = selectedSeat.toInt(),
                             personEmail = email,
-                            price = cinemasViewModel.state.movie.price,
-                            movie = cinemasViewModel.state.movie.title
+                            price = state.price,
+                            movie = state.movie
                         )
                     )
+
                 },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             ) {
                 Text("Confirm")
             }
@@ -138,23 +153,14 @@ fun TicketScreen(
     }
 }
 
-/* @Composable
-fun TicketOptions() {
-    Column {
-        TicketOptionItem("Seat")
-        TicketOptionItem("Email address", isNumber = false)
-    }
-} */
-
 @Composable
 fun TicketOptionItem(value: String, label: String, isNumber: Boolean = true, onChange:(String)->Unit) {
-    var textFieldInput by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
 
         OutlinedTextField(
-            value = textFieldInput,
-            onValueChange = { textFieldInput = it },
+            value = value,
+            onValueChange = onChange,
             label = { Text(label) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(

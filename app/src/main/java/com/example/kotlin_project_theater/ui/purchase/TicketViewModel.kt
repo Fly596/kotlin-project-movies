@@ -33,6 +33,23 @@ class TicketViewModel(private val repository: Repository = Graph.repository) : V
         }
     }
 
+    fun setMovieName(movieName: String){
+        viewModelScope.launch {
+            state = state.copy(movie = movieName)
+        }
+    }
+
+    fun setCinemaName(cinemaName: String){
+        viewModelScope.launch {
+            state = state.copy(cinemaName = cinemaName)
+        }
+    }
+
+    fun setPrice(price: Float){
+        viewModelScope.launch {
+            state = state.copy(price = price)
+        }
+    }
 }
 
 data class TicketState(
