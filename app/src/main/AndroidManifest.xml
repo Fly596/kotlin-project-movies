@@ -14,12 +14,12 @@
         android:theme="@style/Theme.AppTheaterTheme"
         tools:targetApi="31" >
         <activity
-            android:name=".ui.ticket.TicketActivity"
+            android:name=".ui.purchase.TicketActivity"
             android:exported="false"
             android:label="@string/title_activity_ticket"
             android:theme="@style/Theme.AppTheaterTheme" />
         <activity
-            android:name=".ui.ticket.PurchaseActivity"
+            android:name=".ui.purchase.CinemasActivity"
             android:exported="false"
             android:label="@string/title_activity_ticket"
             android:theme="@style/Theme.AppTheaterTheme" />
@@ -39,11 +39,11 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppTheaterTheme" >
-            <intent-filter>
+<!--            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
     </application>
 

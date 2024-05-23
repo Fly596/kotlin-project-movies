@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val viewModel = viewModel(modelClass = HomeViewModel::class.java)
+            //val viewModel = viewModel(modelClass = HomeViewModel::class.java)
 
             AppTheaterTheme {
 

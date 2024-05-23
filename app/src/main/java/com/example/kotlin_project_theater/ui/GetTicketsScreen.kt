@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kotlin_project_theater.R
-import com.example.kotlin_project_theater.ui.ticket.RadioButtonsRow
+import com.example.kotlin_project_theater.ui.purchase.RadioButtonsRow
 
 @Composable
 fun GetTicketsScreen(movieId: Int) {

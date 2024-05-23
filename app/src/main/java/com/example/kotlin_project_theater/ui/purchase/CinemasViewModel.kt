@@ -1,7 +1,6 @@
-package com.example.kotlin_project_theater.ui.ticket
+package com.example.kotlin_project_theater.ui.purchase
 
 import androidx.annotation.DrawableRes
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,12 +11,11 @@ import com.example.kotlin_project_theater.data.Graph
 import com.example.kotlin_project_theater.data.Movies
 import com.example.kotlin_project_theater.data.Repository
 import com.example.kotlin_project_theater.data.TableData
-import com.example.kotlin_project_theater.data.TableData.moviesList
+import com.example.kotlin_project_theater.data.Ticket
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class PurchaseViewModel(private val repository: Repository = Graph.repository) : ViewModel() {
+class CinemasViewModel(private val repository: Repository = Graph.repository) : ViewModel() {
 
     var state by mutableStateOf(PurchaseState())
         private set
@@ -32,6 +30,19 @@ class PurchaseViewModel(private val repository: Repository = Graph.repository) :
             repository.getMovieById(id).collectLatest {
                 state = state.copy(movie = it)
             }
+        }
+    }
+
+    fun setTime(time: String){
+        viewModelScope.launch {
+            state = state.copy(time = time)
+        }
+    }
+
+    fun addTicket(){
+        viewModelScope.launch {
+
+            //repository.insertTicket(ticket = Ticket())
         }
     }
 }

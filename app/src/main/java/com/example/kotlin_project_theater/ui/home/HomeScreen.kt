@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kotlin_project_theater.R
 import com.example.kotlin_project_theater.data.Movies
-import com.example.kotlin_project_theater.ui.ticket.PurchaseActivity
+import com.example.kotlin_project_theater.ui.purchase.CinemasActivity
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,7 +112,7 @@ fun MovieCardItem(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
-            // Постер
+            // Постер.
             Image(
                 painter = painterResource(movie.poster),
                 contentDescription = movie.title,
@@ -139,7 +139,7 @@ fun MovieCardItem(
             Spacer(modifier = Modifier.height(16.dp))
 
             val context = LocalContext.current
-            val intent = Intent(context, PurchaseActivity::class.java)
+            val intent = Intent(context, CinemasActivity::class.java)
 
             // Кнопка для выбора фильма.
             Button(
