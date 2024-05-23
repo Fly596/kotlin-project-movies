@@ -16,7 +16,8 @@ data class Movies(
     val length: Int,
     val description: String,
     @DrawableRes
-    val poster: Int
+    val poster: Int,
+    val price: Float
 )
 
 // Билеты.
@@ -29,5 +30,7 @@ data class Ticket(
     val time: String,
     val date: String,
     val seat: Int,
-    val personEmail: String
+    val personEmail: String,
+    val price: Float,
+    val movie: String
 )

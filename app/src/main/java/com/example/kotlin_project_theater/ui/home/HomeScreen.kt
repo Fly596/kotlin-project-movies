@@ -154,7 +154,7 @@ fun MovieCardItem(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium
             ) {
-                Text("Get Tickets")
+                Text("$${movie.price}")
             }
         }
     }

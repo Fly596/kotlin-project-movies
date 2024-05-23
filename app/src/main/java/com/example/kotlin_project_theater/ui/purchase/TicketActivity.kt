@@ -41,8 +41,6 @@ class TicketActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val cinemasViewModel: CinemasViewModel =
-                viewModel(modelClass = CinemasViewModel::class.java)
 
             val ticketViewModel = viewModel(modelClass = TicketViewModel::class.java)
 
@@ -86,13 +84,16 @@ fun TicketScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            TicketOptions()
+            var selectedSeat by remember { mutableStateOf("") }
+            var email by remember { mutableStateOf("") }
+
+            TicketOptionItem(selectedSeat,"Seat",true, onChange = {selectedSeat = it})
+            TicketOptionItem(email,"Email",false, onChange = {email = it})
 
             Spacer(modifier = Modifier.height(32.dp))
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    ,
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
@@ -100,30 +101,34 @@ fun TicketScreen(
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
-                TicketOptionItem("Credit Card Number")
-                TicketOptionItem("CVV")
-                TicketOptionItem("Expiration Date")
 
-                //TODO: ADD DATA TO ticket and database
 
-                // Payment options
-                val paymentMethods = listOf("Credit Card")
-
+                var cardNumber by remember { mutableStateOf("") }
+                var cvv by remember { mutableStateOf("") }
+                TicketOptionItem(cardNumber,"Credit Card Number",true, onChange = {cardNumber = it})
+                TicketOptionItem(cvv,"CVV",true, onChange = {cvv = it})
             }
 
 
             Spacer(modifier = Modifier.height(16.dp)) // Pushes the button to the bottom
 
+            val cinemasViewModel: CinemasViewModel =
+                viewModel(modelClass = CinemasViewModel::class.java)
 
             Button(
-                onClick = { viewModel.addTicket(ticket = Ticket(
-                    cinemaName = state.cinemaName,
-                    time = state.time,
-                    date = state.date,
-                    seat = state.seat,
-                    personEmail = state.personEmail
-                )
-                ) },
+                onClick = {
+                    viewModel.addTicket(
+                        ticket = Ticket(
+                            cinemaName = state.cinemaName,
+                            time = state.time,
+                            date = state.date,
+                            seat = selectedSeat.toInt(),
+                            personEmail = email,
+                            price = cinemasViewModel.state.movie.price,
+                            movie = cinemasViewModel.state.movie.title
+                        )
+                    )
+                },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -133,26 +138,19 @@ fun TicketScreen(
     }
 }
 
-@Composable
+/* @Composable
 fun TicketOptions() {
     Column {
-        TicketOptionItem("Number of adults")
-        TicketOptionItem("Number of children")
+        TicketOptionItem("Seat")
         TicketOptionItem("Email address", isNumber = false)
     }
-}
+} */
 
 @Composable
-fun TicketOptionItem(label: String, isNumber: Boolean = true) {
+fun TicketOptionItem(value: String, label: String, isNumber: Boolean = true, onChange:(String)->Unit) {
     var textFieldInput by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
-/*         Text(
-            label,
-            modifier = Modifier.padding(bottom = 3.dp),
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Medium
-        ) */
 
         OutlinedTextField(
             value = textFieldInput,
@@ -179,7 +177,7 @@ private fun PreviewTicketOptionsScreen() {
             viewModel(modelClass = CinemasViewModel::class.java)
 
         Surface {
-            //TicketScreen(viewModel = cinemasViewModel)
+            // TicketScreen(viewModel = cinemasViewModel)
         }
     }
 }

@@ -8,9 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,8 +40,7 @@ import com.example.kotlin_project_theater.data.TableData
 import com.example.kotlin_project_theater.ui.MovieTitle
 import com.example.kotlin_project_theater.ui.theme.AppTheaterTheme
 import java.time.LocalDate
-import java.util.Calendar
-import java.util.Locale
+import java.time.format.DateTimeFormatter
 
 class CinemasActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,34 +106,38 @@ fun CinemaCard(
         ) {
 
             // Название и адрес кинотеатра.
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 // Название театра.
-                Text(text = cinema.name, style = MaterialTheme.typography.titleLarge)
+                Text(text = cinema.name, style = MaterialTheme.typography.headlineMedium)
 
                 // Адрес.
-                Text(text = cinema.location, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "Address: ${cinema.location}",
+                    style = MaterialTheme.typography.headlineSmall
+                )
             }
 
-            val calendar = Calendar.getInstance()
-
-            // подзаголовок для раздела с датой.
-            calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
-                ?.let { Text(text = "Date", style = MaterialTheme.typography.titleMedium) }
-
-
-            // val formated = dateIndexed.format(DateTimeFormatter.ofPattern("MM.d"))
+            // Разделитель между секциями.
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 8.dp),
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
             // Выбор даты
+            Text(text = "Date", style = MaterialTheme.typography.headlineSmall)
             val today = LocalDate.now()
             val dateChoices = listOf(
-                today.plusDays(1.toLong()).toString(),
-                today.plusDays(2.toLong()).toString(),
-                today.plusDays(3.toLong()).toString()
+                today.plusDays(1.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d")),
+                today.plusDays(2.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d")),
+                today.plusDays(3.toLong()).format(DateTimeFormatter.ofPattern("MMMM.d"))
             )
             var selectedDate by remember { mutableStateOf("") }
-            RadioButtonsRow(dateChoices, onValueSelected = { selectedDate = it }, )
+            RadioButtonsRow(dateChoices, onValueSelected = { selectedDate = it })
+
+            Spacer(modifier = Modifier.size(12.dp))
 
             // выбор времени
+            Text(text = "Time", style = MaterialTheme.typography.headlineSmall)
             val timeChoices = listOf("12:00 PM", "03:00 PM", "09:00 PM")
             var selectedTime by remember { mutableStateOf("") }
             RadioButtonsRow(timeChoices, onValueSelected = { selectedTime = it })
@@ -154,19 +160,27 @@ fun CinemaCard(
 @Composable
 fun RadioButtonsRow(
     options: List<String>,
-    onValueSelected: (String) -> Unit
+    onValueSelected: (String) -> Unit,
+    title: String = "sad"
 ) {
     val selectedValue = remember { mutableStateOf("") }
-
-    Row() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         options.forEach { option ->
-            RadioButton(
-                selected = selectedValue.value == option,
-                onClick = {
-                    selectedValue.value = option
-                    onValueSelected(option)
-                }
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = option)
+                RadioButton(
+                    selected = selectedValue.value == option,
+                    onClick = {
+                        selectedValue.value = option
+                        onValueSelected(option)
+                    }
+                )
+            }
+
         }
     }
 }

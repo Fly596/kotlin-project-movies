@@ -20,11 +20,6 @@ class CinemasViewModel(private val repository: Repository = Graph.repository) : 
     var state by mutableStateOf(PurchaseState())
         private set
 
-
-    init {
-
-    }
-
     fun getMovieById(id: Int){
         viewModelScope.launch {
             repository.getMovieById(id).collectLatest {
@@ -67,7 +62,8 @@ data class MovieDetails(
     val year: Int = 0,
     val length: Int = 0,
     val description: String = "",
-    @DrawableRes val poster: Int = 0
+    @DrawableRes val poster: Int = 0,
+    val price: Float = 0.0f
 )
 
 fun MovieDetails.toMovie(): Movies = Movies(
@@ -76,7 +72,8 @@ fun MovieDetails.toMovie(): Movies = Movies(
     year = year,
     length = length,
     description = description,
-    poster = poster
+    poster = poster,
+    price = price
 )
 
 /*

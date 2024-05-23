@@ -40,5 +40,7 @@ data class TicketState(
     val time: String = "",
     val date: String = "",
     val seat: Int = 0,
-    val personEmail: String = ""
+    val personEmail: String = "",
+    val price: Float = 0.0f,
+    val movie: String = ""
 )

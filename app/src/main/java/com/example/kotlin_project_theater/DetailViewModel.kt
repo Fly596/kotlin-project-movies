@@ -44,7 +44,9 @@ constructor(
                     time = state.time,
                     date = state.date,
                     seat = state.seat,
-                    personEmail = state.personEmail
+                    personEmail = state.personEmail,
+                    price = state.price,
+                    movie = state.movieName
                 )
             )
         }
@@ -62,6 +64,6 @@ data class DetailState(
     val date: String = "",
     val seat: Int = 0,
     val personName: String = "",
-    val personEmail: String = ""
-
+    val personEmail: String = "",
+    val price: Float = 0.0f
 )
