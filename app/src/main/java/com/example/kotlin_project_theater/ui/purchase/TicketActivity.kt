@@ -41,13 +41,10 @@ class TicketActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val time: String = intent.getStringExtra("time").toString()
             val cinemasViewModel: CinemasViewModel =
                 viewModel(modelClass = CinemasViewModel::class.java)
 
             val ticketViewModel = viewModel(modelClass = TicketViewModel::class.java)
-
-            ticketViewModel.setTime(time)
 
             AppTheaterTheme {
                 Surface {
@@ -106,6 +103,8 @@ fun TicketScreen(
                 TicketOptionItem("Credit Card Number")
                 TicketOptionItem("CVV")
                 TicketOptionItem("Expiration Date")
+
+                //TODO: ADD DATA TO ticket and database
 
                 // Payment options
                 val paymentMethods = listOf("Credit Card")
@@ -180,7 +179,7 @@ private fun PreviewTicketOptionsScreen() {
             viewModel(modelClass = CinemasViewModel::class.java)
 
         Surface {
-            TicketScreen(viewModel = cinemasViewModel)
+            //TicketScreen(viewModel = cinemasViewModel)
         }
     }
 }

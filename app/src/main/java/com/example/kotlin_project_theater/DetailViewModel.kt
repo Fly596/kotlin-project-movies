@@ -10,7 +10,6 @@ import com.example.kotlin_project_theater.data.Graph
 import com.example.kotlin_project_theater.data.Repository
 import com.example.kotlin_project_theater.data.Ticket
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class DetailViewModel
 constructor(
@@ -60,7 +59,7 @@ data class DetailState(
     val selectedCinemaName: String = "",//?
     val movieName: String = "",//?
     val time: String = "",
-    val date: Date = Date(),
+    val date: String = "",
     val seat: Int = 0,
     val personName: String = "",
     val personEmail: String = ""

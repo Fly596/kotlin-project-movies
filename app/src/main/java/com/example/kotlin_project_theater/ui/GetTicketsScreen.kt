@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kotlin_project_theater.R
-import com.example.kotlin_project_theater.ui.purchase.RadioButtonsRow
+import com.example.kotlin_project_theater.ui.purchase.PickTimeButtonsRow
 
 @Composable
 fun GetTicketsScreen(movieId: Int) {
@@ -105,7 +105,7 @@ fun CinemaCardOld(
             }
 
             // Время показа.
-            RadioButtonsRow()
+            PickTimeButtonsRow()
         }
     }
 }

@@ -39,6 +39,11 @@ class CinemasViewModel(private val repository: Repository = Graph.repository) : 
         }
     }
 
+    fun setDate(date: String){
+        viewModelScope.launch {
+            state = state.copy(date = date)
+        }
+    }
     fun addTicket(){
         viewModelScope.launch {
 
@@ -50,6 +55,7 @@ class CinemasViewModel(private val repository: Repository = Graph.repository) : 
 data class PurchaseState(
     val cinemas: List<Cinema> = emptyList(),
     val time: String = "", // время сеанса.
+    val date: String = "",
     val movieId: Int = 0,
     val movie: Movies = TableData.moviesList[0],
     val movieDetails: MovieDetails = MovieDetails()

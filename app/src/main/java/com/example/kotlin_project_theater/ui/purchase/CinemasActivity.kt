@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -23,10 +23,10 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,11 +35,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kotlin_project_theater.data.Cinema
 import com.example.kotlin_project_theater.data.TableData
 import com.example.kotlin_project_theater.ui.MovieTitle
-import com.example.kotlin_project_theater.ui.home.HomeViewModel
 import com.example.kotlin_project_theater.ui.theme.AppTheaterTheme
-import org.w3c.dom.Text
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -50,9 +47,11 @@ class CinemasActivity : ComponentActivity() {
 
         setContent {
             val movieId: Int = intent.getIntExtra("movieId", 1)
-            val homeViewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
             val cinemasViewModel: CinemasViewModel =
                 viewModel(modelClass = CinemasViewModel::class.java)
+
+            val ticketsViewModel: TicketViewModel =
+                viewModel(modelClass = TicketViewModel::class.java)
 
             cinemasViewModel.getMovieById(movieId)
 
@@ -93,6 +92,7 @@ fun CinemasScreen(viewModel: CinemasViewModel = CinemasViewModel()) {
 fun CinemaCard(
     state: PurchaseState,
     cinema: Cinema,
+    viewModel: TicketViewModel = TicketViewModel(),
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.padding(vertical = 16.dp)) {
@@ -101,7 +101,6 @@ fun CinemaCard(
             modifier = Modifier
                 .padding(12.dp)
                 .fillMaxWidth()
-
         ) {
 
             // Название и адрес кинотеатра.
@@ -113,75 +112,81 @@ fun CinemaCard(
                 Text(text = cinema.location, style = MaterialTheme.typography.bodyMedium)
             }
 
-
-
             val calendar = Calendar.getInstance()
 
-            val selectedDate = remember { mutableStateOf("") }
+            // подзаголовок для раздела с датой.
+            calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+                ?.let { Text(text = "Date", style = MaterialTheme.typography.titleMedium) }
 
-            calendar.getDisplayName( Calendar.MONTH,  Calendar.LONG, Locale.getDefault())
-                ?.let { Text(text = "Date",style = MaterialTheme.typography.titleMedium) }
-            DatePicker()
 
-            RadioButtonsRow()
+            // val formated = dateIndexed.format(DateTimeFormatter.ofPattern("MM.d"))
+
+            // Выбор даты
+            val today = LocalDate.now()
+            val dateChoices = listOf(
+                today.plusDays(1.toLong()).toString(),
+                today.plusDays(2.toLong()).toString(),
+                today.plusDays(3.toLong()).toString()
+            )
+            var selectedDate by remember { mutableStateOf("") }
+            RadioButtonsRow(dateChoices, onValueSelected = { selectedDate = it }, )
+
+            // выбор времени
+            val timeChoices = listOf("12:00 PM", "03:00 PM", "09:00 PM")
+            var selectedTime by remember { mutableStateOf("") }
+            RadioButtonsRow(timeChoices, onValueSelected = { selectedTime = it })
+
+            val context = LocalContext.current
+            val intent = Intent(context, TicketActivity::class.java)
+            Button(onClick = {
+                viewModel.setTime(selectedTime)
+                viewModel.setDate(selectedDate)
+
+                context.startActivity(intent)
+            }) {
+                Text(text = "Confirm")
+            }
 
         }
     }
 }
 
 @Composable
-fun DatePicker() {
-    val selectedDate = remember { mutableStateOf("") }
+fun RadioButtonsRow(
+    options: List<String>,
+    onValueSelected: (String) -> Unit
+) {
+    val selectedValue = remember { mutableStateOf("") }
 
-    Row{
-        RadioButtonWithText(1, selectedDate)
-        RadioButtonWithText(2, selectedDate)
-        RadioButtonWithText(3, selectedDate)
+    Row() {
+        options.forEach { option ->
+            RadioButton(
+                selected = selectedValue.value == option,
+                onClick = {
+                    selectedValue.value = option
+                    onValueSelected(option)
+                }
+            )
+        }
     }
-
-
 }
 
+/* @Composable
+fun PickDateRadioButtonsRow(date: String, onDatePick: (String) -> Unit) {
 
+    Row {
+        RadioButtonWithText(1, date, onClick = onDatePick)
+        RadioButtonWithText(2, date, onClick = onDatePick)
+        RadioButtonWithText(3, date, onClick = onDatePick)
+    }
+} */
 
-//     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-//
-//         Row(
-// verticalAlignment = Alignment.CenterVertically
-//         ) {
-//             val date = LocalDate.now()
-//             //val date: String = "${calendar.get(Calendar.DAY_OF_MONTH) + 1}"
-//             //Text(text = date)
-//
-//             RadioButton(
-//                 selected = selectedDate.value == date,
-//                 onClick = { selectedDate.value = date }
-//             )
-//
-//         }
-//
-//         Row(
-//             verticalAlignment = Alignment.CenterVertically
-//         )  {
-//
-//
-//
-//             RadioButton(
-//                 selected = selectedDate.value == date,
-//                 onClick = { selectedDate.value = date }
-//             )
-//
-//         }
-
-
-
-
-
-
-@Composable
+// компонент радио батона с текстом слева.
+/* @Composable
 private fun RadioButtonWithText(
     index: Int,
-    selectedDate: MutableState<String>
+    selectedDate: String,
+    onClick: (String) -> Unit
 ) {
     val today = LocalDate.now()
     val dateIndexed = today.plusDays(index.toLong())
@@ -193,17 +198,16 @@ private fun RadioButtonWithText(
         Text(text = formated)
 
         RadioButton(
-            selected = selectedDate.value == formated.toString(),
-            onClick = { selectedDate.value = formated }
+            selected = selectedDate == formated.toString(),
+            onClick = { selectedDate = formated }
         )
-
     }
-}
 
+} */
 
+// строка с кнопками выбора времени.
 @Composable
-fun RadioButtonsRow() {
-
+fun PickTimeButtonsRow() {
     val timeChoices = listOf("12:00 PM", "03:00 PM", "09:00 PM")
 
     Column {
@@ -220,11 +224,11 @@ fun RadioButtonsRow() {
     }
 }
 
+// кнопка для выбора времени
 @Composable
 fun TimeOptionButton(time: String) {
     val context = LocalContext.current
     val intent = Intent(context, TicketActivity::class.java)
-
 
     OutlinedButton(
         onClick = {

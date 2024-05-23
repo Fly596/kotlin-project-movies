@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 // фильмы.
 @Entity(tableName = "Movies")
@@ -28,7 +27,7 @@ data class Ticket(
     val ticketId: Int = 0,
     val cinemaName: String,
     val time: String,
-    val date: Date,
+    val date: String,
     val seat: Int,
     val personEmail: String
 )

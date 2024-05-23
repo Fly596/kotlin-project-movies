@@ -9,7 +9,6 @@ import com.example.kotlin_project_theater.data.Graph
 import com.example.kotlin_project_theater.data.Repository
 import com.example.kotlin_project_theater.data.Ticket
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class TicketViewModel(private val repository: Repository = Graph.repository) : ViewModel() {
 
@@ -28,14 +27,18 @@ class TicketViewModel(private val repository: Repository = Graph.repository) : V
         }
     }
 
+    fun setDate(date: String){
+        viewModelScope.launch {
+            state = state.copy(date = date)
+        }
+    }
+
 }
 
 data class TicketState(
     val cinemaName: String = "",
     val time: String = "",
-    val date: Date = Date(),
+    val date: String = "",
     val seat: Int = 0,
     val personEmail: String = ""
-
-
 )

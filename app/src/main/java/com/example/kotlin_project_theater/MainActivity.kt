@@ -6,9 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kotlin_project_theater.ui.home.HomeScreen
 import com.example.kotlin_project_theater.ui.home.HomeViewModel
 import com.example.kotlin_project_theater.ui.theme.AppTheaterTheme
 
@@ -19,17 +21,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             //val viewModel = viewModel(modelClass = HomeViewModel::class.java)
+            val viewModel: HomeViewModel = viewModel(modelClass = HomeViewModel::class.java)
 
             AppTheaterTheme {
-
-                Surface(
-                    modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
-                ) {
-                    //AppNavHostController()
-                    //HomeScreen(onMovieClick = {})
-                    // GetTicketsScreen()
+                Scaffold {
+                    HomeScreen(viewModel)
                 }
-                // HomeScreen()
+
+
             }
         }
     }
