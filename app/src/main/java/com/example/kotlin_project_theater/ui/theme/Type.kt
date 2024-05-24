@@ -11,21 +11,24 @@ val provider =
     GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
         providerPackage = "com.google.android.gms",
-        certificates = R.array.com_google_android_gms_fonts_certs)
+        certificates = R.array.com_google_android_gms_fonts_certs
+    )
 
 val bodyFontFamily =
     FontFamily(
         Font(
             googleFont = GoogleFont("Roboto"),
             fontProvider = provider,
-        ))
+        )
+    )
 
 val displayFontFamily =
     FontFamily(
         Font(
             googleFont = GoogleFont("Roboto Flex"),
             fontProvider = provider,
-        ))
+        )
+    )
 
 // Default Material 3 typography values
 val baseline = Typography()
@@ -36,8 +39,9 @@ val AppTypography =
         displayMedium = baseline.displayMedium.copy(fontFamily = displayFontFamily),
         displaySmall = baseline.displaySmall.copy(fontFamily = displayFontFamily),
         headlineLarge =
-            baseline.headlineLarge.copy(
-                fontFamily = displayFontFamily, fontWeight = FontWeight.W500),
+        baseline.headlineLarge.copy(
+            fontFamily = displayFontFamily, fontWeight = FontWeight.W500
+        ),
         headlineMedium = baseline.headlineMedium.copy(fontFamily = displayFontFamily),
         headlineSmall = baseline.headlineSmall.copy(fontFamily = displayFontFamily),
         titleLarge = baseline.titleLarge.copy(fontFamily = displayFontFamily),

@@ -258,67 +258,67 @@ private val highContrastDarkColorScheme =
 val extendedLight =
     ExtendedColorScheme(
         gibraltarSea =
-            ColorFamily(
-                gibraltarSeaLight,
-                onGibraltarSeaLight,
-                gibraltarSeaContainerLight,
-                onGibraltarSeaContainerLight,
-            ),
+        ColorFamily(
+            gibraltarSeaLight,
+            onGibraltarSeaLight,
+            gibraltarSeaContainerLight,
+            onGibraltarSeaContainerLight,
+        ),
     )
 
 val extendedDark =
     ExtendedColorScheme(
         gibraltarSea =
-            ColorFamily(
-                gibraltarSeaDark,
-                onGibraltarSeaDark,
-                gibraltarSeaContainerDark,
-                onGibraltarSeaContainerDark,
-            ),
+        ColorFamily(
+            gibraltarSeaDark,
+            onGibraltarSeaDark,
+            gibraltarSeaContainerDark,
+            onGibraltarSeaContainerDark,
+        ),
     )
 
 val extendedLightMediumContrast =
     ExtendedColorScheme(
         gibraltarSea =
-            ColorFamily(
-                gibraltarSeaLightMediumContrast,
-                onGibraltarSeaLightMediumContrast,
-                gibraltarSeaContainerLightMediumContrast,
-                onGibraltarSeaContainerLightMediumContrast,
-            ),
+        ColorFamily(
+            gibraltarSeaLightMediumContrast,
+            onGibraltarSeaLightMediumContrast,
+            gibraltarSeaContainerLightMediumContrast,
+            onGibraltarSeaContainerLightMediumContrast,
+        ),
     )
 
 val extendedLightHighContrast =
     ExtendedColorScheme(
         gibraltarSea =
-            ColorFamily(
-                gibraltarSeaLightHighContrast,
-                onGibraltarSeaLightHighContrast,
-                gibraltarSeaContainerLightHighContrast,
-                onGibraltarSeaContainerLightHighContrast,
-            ),
+        ColorFamily(
+            gibraltarSeaLightHighContrast,
+            onGibraltarSeaLightHighContrast,
+            gibraltarSeaContainerLightHighContrast,
+            onGibraltarSeaContainerLightHighContrast,
+        ),
     )
 
 val extendedDarkMediumContrast =
     ExtendedColorScheme(
         gibraltarSea =
-            ColorFamily(
-                gibraltarSeaDarkMediumContrast,
-                onGibraltarSeaDarkMediumContrast,
-                gibraltarSeaContainerDarkMediumContrast,
-                onGibraltarSeaContainerDarkMediumContrast,
-            ),
+        ColorFamily(
+            gibraltarSeaDarkMediumContrast,
+            onGibraltarSeaDarkMediumContrast,
+            gibraltarSeaContainerDarkMediumContrast,
+            onGibraltarSeaContainerDarkMediumContrast,
+        ),
     )
 
 val extendedDarkHighContrast =
     ExtendedColorScheme(
         gibraltarSea =
-            ColorFamily(
-                gibraltarSeaDarkHighContrast,
-                onGibraltarSeaDarkHighContrast,
-                gibraltarSeaContainerDarkHighContrast,
-                onGibraltarSeaContainerDarkHighContrast,
-            ),
+        ColorFamily(
+            gibraltarSeaDarkHighContrast,
+            onGibraltarSeaDarkHighContrast,
+            gibraltarSeaContainerDarkHighContrast,
+            onGibraltarSeaContainerDarkHighContrast,
+        ),
     )
 
 @Immutable
@@ -345,6 +345,7 @@ fun AppTheaterTheme(
                 val context = LocalContext.current
                 if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
             }
+
             darkTheme -> darkScheme
             else -> lightScheme
         }

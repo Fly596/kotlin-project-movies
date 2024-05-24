@@ -68,7 +68,8 @@ fun MovieDetails.toMovie(): Movies =
         length = length,
         description = description,
         poster = poster,
-        price = price)
+        price = price
+    )
 
 /*
 fun MovieDetails.toMovieState(): PurchaseState = PurchaseState(

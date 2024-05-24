@@ -70,63 +70,71 @@ fun TicketScreen(viewModel: TicketViewModel, onPurchaseClicked: () -> Unit = {})
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
-            modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally) {
-                Spacer(modifier = Modifier.height(16.dp))
+            modifier = Modifier
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Select Ticket Type",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            var selectedSeat by remember { mutableStateOf("") }
+            var email by remember { mutableStateOf("") }
+
+            TicketOptionItem(selectedSeat, "Seat", true, onChange = { selectedSeat = it })
+            TicketOptionItem(email, "Email", false, onChange = { email = it })
+
+            Spacer(modifier = Modifier.height(32.dp))
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 Text(
-                    text = "Select Ticket Type",
+                    "Payment info:",
                     style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.Start))
+                    color = MaterialTheme.colorScheme.primary
+                )
 
-                Spacer(modifier = Modifier.height(24.dp))
-
-                var selectedSeat by remember { mutableStateOf("") }
-                var email by remember { mutableStateOf("") }
-
-                TicketOptionItem(selectedSeat, "Seat", true, onChange = { selectedSeat = it })
-                TicketOptionItem(email, "Email", false, onChange = { email = it })
-
-                Spacer(modifier = Modifier.height(32.dp))
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text(
-                            "Payment info:",
-                            style = MaterialTheme.typography.headlineSmall,
-                            color = MaterialTheme.colorScheme.primary)
-
-                        var cardNumber by remember { mutableStateOf("") }
-                        var cvv by remember { mutableStateOf("") }
-                        TicketOptionItem(
-                            cardNumber, "Credit Card Number", true, onChange = { cardNumber = it })
-                        TicketOptionItem(cvv, "CVV", true, onChange = { cvv = it })
-                    }
-
-                Spacer(modifier = Modifier.height(16.dp)) // Pushes the button to the bottom
-
-                val cinemasViewModel: CinemasViewModel =
-                    viewModel(modelClass = CinemasViewModel::class.java)
-
-                Button(
-                    onClick = {
-                        viewModel.addTicket(
-                            ticket =
-                                Ticket(
-                                    cinemaName = state.cinemaName,
-                                    time = state.time,
-                                    date = state.date,
-                                    seat = selectedSeat.toInt(),
-                                    personEmail = email,
-                                    price = state.price,
-                                    movie = state.movie))
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
-                ) {
-                    Text("Confirm")
-                }
+                var cardNumber by remember { mutableStateOf("") }
+                var cvv by remember { mutableStateOf("") }
+                TicketOptionItem(
+                    cardNumber, "Credit Card Number", true, onChange = { cardNumber = it })
+                TicketOptionItem(cvv, "CVV", true, onChange = { cvv = it })
             }
+
+            Spacer(modifier = Modifier.height(16.dp)) // Pushes the button to the bottom
+
+            val cinemasViewModel: CinemasViewModel =
+                viewModel(modelClass = CinemasViewModel::class.java)
+
+            Button(
+                onClick = {
+                    viewModel.addTicket(
+                        ticket =
+                        Ticket(
+                            cinemaName = state.cinemaName,
+                            time = state.time,
+                            date = state.date,
+                            seat = selectedSeat.toInt(),
+                            personEmail = email,
+                            price = state.price,
+                            movie = state.movie
+                        )
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+            ) {
+                Text("Confirm")
+            }
+        }
     }
 }
 
@@ -145,13 +153,15 @@ fun TicketOptionItem(
             label = { Text(label) },
             singleLine = true,
             keyboardOptions =
-                KeyboardOptions(
-                    keyboardType =
-                        when {
-                            isNumber -> KeyboardType.Number
-                            else -> KeyboardType.Email
-                        }),
-            modifier = Modifier.fillMaxWidth())
+            KeyboardOptions(
+                keyboardType =
+                when {
+                    isNumber -> KeyboardType.Number
+                    else -> KeyboardType.Email
+                }
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 

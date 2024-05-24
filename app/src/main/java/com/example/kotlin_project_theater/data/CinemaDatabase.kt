@@ -13,17 +13,22 @@ abstract class CinemaDatabase : RoomDatabase() {
 
     companion object {
 
-        @Volatile var INSTANCE: CinemaDatabase? = null
+        @Volatile
+        var INSTANCE: CinemaDatabase? = null
 
         fun getInstance(context: Context): CinemaDatabase {
             return INSTANCE
-                ?: synchronized(this) {
-                    val instance =
-                        Room.databaseBuilder(context, CinemaDatabase::class.java, "cinema_database")
-                            .build()
-                    INSTANCE = instance
-                    return instance
-                }
+                   ?: synchronized(this) {
+                       val instance =
+                           Room.databaseBuilder(
+                               context,
+                               CinemaDatabase::class.java,
+                               "cinema_database"
+                           )
+                               .build()
+                       INSTANCE = instance
+                       return instance
+                   }
         }
     }
 }

@@ -56,7 +56,9 @@ class TicketsListActivity : ComponentActivity() {
 @Composable
 fun TicketsListScreen(homeViewModel: HomeViewModel, modifier: Modifier = Modifier) {
 
-    LazyColumn(modifier = modifier.fillMaxWidth().padding(16.dp)) {
+    LazyColumn(modifier = modifier
+        .fillMaxWidth()
+        .padding(16.dp)) {
         items(homeViewModel.state.tickets) { ticket -> TicketCard(ticket, homeViewModel) }
     }
 }
@@ -78,93 +80,103 @@ fun TicketCard(ticket: Ticket, viewModel: HomeViewModel) {
                 "Confirm"
             } else {
                 "Edit"
-            })
+            }
+        )
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         elevation = CardDefaults.cardElevation(10.dp),
         colors =
-            CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface)) {
-            Column(
-                modifier = Modifier.padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
 
-                    // заголовок.
-                    Text("Ticket ${ticket.ticketId}")
+            // заголовок.
+            Text("Ticket ${ticket.ticketId}")
 
-                    // поля с данными
-                    DynamicTextField(
-                        text = cinemaValue,
-                        allowEdit,
-                        label = "Cinema",
-                        onEnter = { cinemaValue = it })
-                    DynamicTextField(
-                        text = timeValue, allowEdit, label = "Time", onEnter = { timeValue = it })
-                    DynamicTextField(
-                        text = dateValue, allowEdit, label = "Date", onEnter = { dateValue = it })
-                    DynamicTextField(
-                        text = seatValue, allowEdit, label = "Seat", onEnter = { seatValue = it })
-                    DynamicTextField(
-                        text = emailValue,
-                        allowEdit,
-                        label = "Email",
-                        onEnter = { emailValue = it })
-                    DynamicTextField(
-                        text = priceValue,
-                        allowEdit,
-                        label = "Price",
-                        onEnter = { priceValue = it })
-                    DynamicTextField(
-                        text = movieValue,
-                        allowEdit,
-                        label = "Movie",
-                        onEnter = { movieValue = it })
+            // поля с данными
+            DynamicTextField(
+                text = cinemaValue,
+                allowEdit,
+                label = "Cinema",
+                onEnter = { cinemaValue = it })
+            DynamicTextField(
+                text = timeValue, allowEdit, label = "Time", onEnter = { timeValue = it })
+            DynamicTextField(
+                text = dateValue, allowEdit, label = "Date", onEnter = { dateValue = it })
+            DynamicTextField(
+                text = seatValue, allowEdit, label = "Seat", onEnter = { seatValue = it })
+            DynamicTextField(
+                text = emailValue,
+                allowEdit,
+                label = "Email",
+                onEnter = { emailValue = it })
+            DynamicTextField(
+                text = priceValue,
+                allowEdit,
+                label = "Price",
+                onEnter = { priceValue = it })
+            DynamicTextField(
+                text = movieValue,
+                allowEdit,
+                label = "Movie",
+                onEnter = { movieValue = it })
 
-                    Button(
-                        onClick = {
-                            allowEdit = !allowEdit
+            Button(
+                onClick = {
+                    allowEdit = !allowEdit
 
-                            if (!allowEdit) {
-                                viewModel.editTicket(
-                                    ticket =
-                                        Ticket(
-                                            ticketId = ticket.ticketId,
-                                            cinemaName = cinemaValue,
-                                            time = timeValue,
-                                            date = dateValue,
-                                            seat = seatValue.toInt(),
-                                            personEmail = emailValue,
-                                            price = priceValue.toFloat(),
-                                            movie = movieValue))
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.small) {
-                            Text(
-                                text =
-                                    if (!allowEdit) {
-                                        "Edit"
-                                    } else {
-                                        "Confirm"
-                                    },
+                    if (!allowEdit) {
+                        viewModel.editTicket(
+                            ticket =
+                            Ticket(
+                                ticketId = ticket.ticketId,
+                                cinemaName = cinemaValue,
+                                time = timeValue,
+                                date = dateValue,
+                                seat = seatValue.toInt(),
+                                personEmail = emailValue,
+                                price = priceValue.toFloat(),
+                                movie = movieValue
                             )
-                        }
+                        )
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small
+            ) {
+                Text(
+                    text =
+                    if (!allowEdit) {
+                        "Edit"
+                    } else {
+                        "Confirm"
+                    },
+                )
+            }
 
-                    Button(
-                        onClick = { viewModel.deleteTicket(ticket = ticket) },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.small,
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.error,
-                            )) {
-                            Text("Delete")
-                        }
-                }
+            Button(
+                onClick = { viewModel.deleteTicket(ticket = ticket) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small,
+                colors =
+                ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                )
+            ) {
+                Text("Delete")
+            }
         }
+    }
 }
 
 @Composable
@@ -182,12 +194,14 @@ fun DynamicTextField(
             label = { Text(label) },
             singleLine = true,
             colors =
-                TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceDim,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                ),
+            TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceDim,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            ),
             textStyle = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.height(48.dp).shadow(2.dp),
+            modifier = Modifier
+                .height(48.dp)
+                .shadow(2.dp),
         )
     }
 }
